@@ -1,0 +1,3653 @@
+{
+  "state": {
+    "system": {
+      "id": "fe73ce3df8d34ea79024dbc51c285d65",
+      "version": {
+        "linux": "5.4.72-v7l #1 SMP Mon Oct 19 11:12:20 UTC 2020",
+        "core": "4.1.4-0-g8783dc0",
+        "buildId": "20250605132822",
+        "buildVersion": "4.1.4-0-gb43e478",
+        "upgrade": null
+      },
+      "datetime": {
+        "timezone": "Europe/Paris",
+        "utc": "2026-02-08T21:53:37+00:00",
+        "localtime": "2026-02-08T22:53:37+01:00"
+      },
+      "network": {
+        "eth": {
+          "connected": true,
+          "ip": {
+            "mac": "b8:27:eb:9b:51:9d",
+            "address": "192.168.1.40",
+            "netmask": "255.255.255.0",
+            "gateway": "192.168.1.254",
+            "dns": [
+              "192.168.1.254",
+              "2001:861:5140:1280:b292:4aff:fe50:e305"
+            ]
+          },
+          "ipMode": 0
+        },
+        "wlan": {
+          "mode": 1,
+          "ip": {
+            "mac": "b8:27:eb:ce:04:c8",
+            "address": "192.168.43.2",
+            "netmask": "255.255.255.0",
+            "gateway": "",
+            "dns": []
+          },
+          "client": null,
+          "adhoc": {
+            "ssid": "imagi-519d",
+            "password": "fj2zq598Hc"
+          },
+          "adhocDefault": {
+            "ssid": "imagi-519d",
+            "password": "fj2zq598Hc"
+          },
+          "modeDefault": 1,
+          "ipMode": 1
+        },
+        "gsm": {
+          "presence": false,
+          "ip": null,
+          "operator": "",
+          "connectionStatus": "",
+          "networkType": "",
+          "signalStrength": 0
+        },
+        "grpc": {
+          "server": "grpc.imagi-x.fr",
+          "port": 10000,
+          "lastServerUpdate": "2026-02-08T21:53:32.263847726Z"
+        },
+        "grpcCertificate": "2023-01-23T07:18:00Z",
+        "grpcCertificateEnd": "2028-01-22T07:18:00Z"
+      },
+      "usb": null,
+      "proximity": {
+        "presence": false,
+        "lastPush": null
+      },
+      "localisation": {
+        "country": "FR"
+      },
+      "info": {
+        "uptime": 45692,
+        "reboot": 3,
+        "temperature": 46.698,
+        "rpiModel": "00a020d3",
+        "rpiSerial": "029b519d"
+      }
+    },
+    "cards": {
+      "base": {
+        "addr": 0,
+        "state": 1,
+        "version": 256,
+        "uptime": 46547,
+        "lastCommunication": null,
+        "comError": 0,
+        "inputsTor": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          false,
+          true,
+          false
+        ],
+        "inputsAna": [
+          717,
+          700,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1019
+        ],
+        "inputsCpt": [
+          0,
+          0,
+          0
+        ],
+        "outputsTor": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "bassin": {
+        "addr": 0,
+        "state": 3,
+        "version": 0,
+        "uptime": 0,
+        "lastCommunication": null,
+        "comError": 0,
+        "inputsTor": [],
+        "inputsAna": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "inputsCpt": [],
+        "outputsTor": []
+      },
+      "radio": [],
+      "pnv": {
+        "addr": 0,
+        "state": 3,
+        "version": 0,
+        "uptime": 0,
+        "lastCommunication": null,
+        "comError": 0,
+        "inputsTor": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "inputsAna": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "inputsCpt": [],
+        "outputsTor": [
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "treatment": {
+        "addr": 0,
+        "state": 1,
+        "version": 256,
+        "uptime": 46267,
+        "lastCommunication": null,
+        "comError": 0,
+        "inputsTor": [
+          true,
+          true,
+          true
+        ],
+        "inputsAna": [
+          2192,
+          1444,
+          2,
+          0
+        ],
+        "inputsCpt": [],
+        "outputsTor": []
+      },
+      "energy": null,
+      "pumps": [
+        {
+          "addr": 56,
+          "state": 1,
+          "type": 3,
+          "rpm": 0,
+          "power": 0,
+          "powerTotal": 692715,
+          "slabClose": true,
+          "waterPresent": true,
+          "comError": 0,
+          "mbRegisters": [
+            0,
+            0,
+            0,
+            0,
+            15,
+            0,
+            0,
+            0,
+            65,
+            1,
+            0,
+            0,
+            0,
+            98,
+            0,
+            0,
+            2,
+            0
+          ]
+        }
+      ],
+      "electrolyzer": null
+    },
+    "pool": {
+      "informations": {
+        "liner": 2,
+        "volume": 30
+      },
+      "inputs": {
+        "temperatureAir": 1,
+        "temperatureWater": 1,
+        "probePh": true,
+        "probeOrp": true,
+        "probeSalinity": false,
+        "temperatureThird": 0
+      },
+      "pumps": {
+        "pumpFx1": {
+          "presence": true,
+          "type": 3,
+          "slabClose": true,
+          "waterPresent": true,
+          "disjonctionInput": true,
+          "command": false,
+          "output": 0,
+          "rpm": 0,
+          "state": 0
+        },
+        "pumpFx2": {
+          "presence": false,
+          "type": 0,
+          "slabClose": false,
+          "waterPresent": false,
+          "disjonctionInput": false,
+          "command": false,
+          "output": 0,
+          "rpm": 0,
+          "state": 0
+        },
+        "pumpFx3": {
+          "presence": false,
+          "type": 0,
+          "slabClose": false,
+          "waterPresent": false,
+          "disjonctionInput": false,
+          "command": false,
+          "output": 0,
+          "rpm": 0,
+          "state": 0
+        },
+        "pumpFx4": {
+          "presence": false,
+          "type": 0,
+          "slabClose": false,
+          "waterPresent": false,
+          "disjonctionInput": false,
+          "command": false,
+          "output": 0,
+          "rpm": 0,
+          "state": 0
+        },
+        "pumpFx5": {
+          "presence": false,
+          "type": 0,
+          "slabClose": false,
+          "waterPresent": false,
+          "disjonctionInput": false,
+          "command": false,
+          "output": 0,
+          "rpm": 0,
+          "state": 0
+        },
+        "pumpStandby": {
+          "presence": false,
+          "type": 0,
+          "slabClose": false,
+          "waterPresent": false,
+          "disjonctionInput": false,
+          "command": false,
+          "output": 0,
+          "rpm": 0,
+          "state": 0
+        },
+        "pumpAuxiliary": {
+          "presence": false,
+          "type": 0,
+          "slabClose": false,
+          "waterPresent": false,
+          "disjonctionInput": false,
+          "command": false,
+          "output": 0,
+          "rpm": 0,
+          "state": 0
+        },
+        "pumpNcc": {
+          "presence": false,
+          "type": 0,
+          "slabClose": false,
+          "waterPresent": false,
+          "disjonctionInput": false,
+          "command": false,
+          "output": 0,
+          "rpm": 0,
+          "state": 0
+        },
+        "pumpNcc2": {
+          "presence": false,
+          "type": 0,
+          "slabClose": false,
+          "waterPresent": false,
+          "disjonctionInput": false,
+          "command": false,
+          "output": 0,
+          "rpm": 0,
+          "state": 0
+        },
+        "pumpRpm": {
+          "filtrationBoostMode": 2850,
+          "balneoMode": 2850,
+          "heaterMode": 2200,
+          "ecoMode": 1800,
+          "nccMode": 2750,
+          "winteringMode": 2850,
+          "filtrationOptimizedMode": 2850
+        },
+        "pumpFlow": {
+          "filtrationBoostMode": 30000,
+          "balneoMode": 12000,
+          "heaterMode": 21000,
+          "ecoMode": 14000,
+          "nccMode": 70000,
+          "winteringMode": 30000,
+          "filtrationOptimizedMode": 21000
+        },
+        "pumpPowerRating": [
+          {
+            "speed": 900,
+            "power": 0
+          },
+          {
+            "speed": 1800,
+            "power": 353
+          },
+          {
+            "speed": 2000,
+            "power": 470
+          },
+          {
+            "speed": 2200,
+            "power": 610
+          },
+          {
+            "speed": 2400,
+            "power": 777
+          },
+          {
+            "speed": 2500,
+            "power": 850
+          },
+          {
+            "speed": 2600,
+            "power": 977
+          },
+          {
+            "speed": 2700,
+            "power": 1088
+          },
+          {
+            "speed": 2750,
+            "power": 1145
+          },
+          {
+            "speed": 2800,
+            "power": 1206
+          },
+          {
+            "speed": 2850,
+            "power": 1266
+          },
+          {
+            "speed": 3000,
+            "power": 1266
+          }
+        ]
+      },
+      "energy": {
+        "card": {
+          "presence": false,
+          "factor": 0.2083,
+          "rmsVoltage": 0
+        },
+        "probe1": null,
+        "probe2": null,
+        "probe3": null,
+        "probe4": null,
+        "photovoltaic": null,
+        "linky": null
+      },
+      "filtration": {
+        "type": 1
+      },
+      "balneo": {
+        "presence": false
+      },
+      "ncc": {
+        "presence": false,
+        "model": ""
+      },
+      "ncc2": {
+        "presence": false,
+        "model": ""
+      },
+      "filling": {
+        "presence": false,
+        "tankPresence": false
+      },
+      "heater": {
+        "presence": true,
+        "pump": 1,
+        "brand": "Pompe à chaleur",
+        "tempMin": 20,
+        "tempMax": 32
+      },
+      "roller": {
+        "presence": false,
+        "type": 0,
+        "brand": "magiguardx",
+        "bleCode": ""
+      },
+      "spotlight": {
+        "presence": true,
+        "protocol": 3,
+        "brand": "par56"
+      },
+      "treatment": {
+        "presence": true,
+        "ph": {
+          "presence": true,
+          "type": 0,
+          "emptySensorType": 0
+        },
+        "chlorine": {
+          "presence": false,
+          "emptySensorType": 0
+        },
+        "electrolyzer": {
+          "presence": true,
+          "type": 0
+        },
+        "product1": {
+          "presence": false
+        },
+        "product2": {
+          "presence": false
+        }
+      },
+      "accessory1": {
+        "presence": false
+      },
+      "accessory2": {
+        "presence": false
+      },
+      "accessory3": {
+        "presence": false
+      },
+      "accessory4": {
+        "presence": false
+      },
+      "accessory5": {
+        "presence": false
+      },
+      "accessory6": {
+        "presence": false
+      },
+      "flowSensor": {
+        "presence": true
+      }
+    },
+    "metrics": {
+      "waterTemperature": 6.5,
+      "airTemperature": 4.7,
+      "waterFlow": 0,
+      "ph": 7,
+      "phCalibrationState": 5,
+      "phOffset": 0,
+      "phCalibrationValues": [
+        3397,
+        2168,
+        0
+      ],
+      "phCalibrationSaved": [
+        3397,
+        2168,
+        0
+      ],
+      "phCalibrationSavedDate": "2025-04-16T05:40:28Z",
+      "phFlow": 7,
+      "phFlowDate": "2026-02-08T17:30:00Z",
+      "phAlarmLimits": [
+        3,
+        9
+      ],
+      "orp": 405,
+      "orpCalibrationState": 3,
+      "orpOffset": 0,
+      "orpCalibrationValues": [
+        1654
+      ],
+      "orpCalibrationSaved": [
+        1654
+      ],
+      "orpCalibrationSavedDate": "2025-04-14T11:56:07Z",
+      "orpFlow": 401,
+      "orpFlowDate": "2026-02-08T17:30:00Z",
+      "orpAlarmLimits": [
+        100,
+        900
+      ],
+      "freeChlorine": 0,
+      "salinity": 0,
+      "salinityCalibrationState": 0,
+      "salinityOffset": 0,
+      "salinityCalibrationValues": [
+        0,
+        0
+      ],
+      "salinityCalibrationSaved": [
+        0,
+        0
+      ],
+      "salinityCalibrationSavedDate": "1970-01-01T00:00:00Z",
+      "salinityFlow": 0,
+      "salinityFlowDate": "1970-01-01T00:00:00Z",
+      "salinityAlarmLimits": [
+        4
+      ],
+      "thirdTemperature": -40,
+      "thirdTemperatureOffset": 0,
+      "waterHardness": 17,
+      "waterTemperatureFlow": 5.9,
+      "waterTemperatureFlowDate": "2026-02-08T17:30:00Z",
+      "waterFlowFactor": 530,
+      "filterClogging": 15,
+      "filterCloggingDate": "2026-01-07T09:15:31Z",
+      "filterParameters": {
+        "calibrationValues": [
+          937
+        ],
+        "calibrationSaved": [
+          937
+        ],
+        "calibrationSavedDate": "2024-05-31T13:38:12Z",
+        "calibrationState": 4,
+        "calibrationParameters": {
+          "filtrationDelay": 60
+        },
+        "alarmEnabled": false,
+        "alarmParameters": {
+          "high": 60,
+          "veryHigh": 80,
+          "deltaReset": 15
+        }
+      }
+    },
+    "spotlight": {
+      "presence": true,
+      "mode": 1,
+      "state": 0,
+      "planningDays": {
+        "monday": 0,
+        "tuesday": 0,
+        "wednesday": 0,
+        "thursday": 0,
+        "friday": 0,
+        "saturday": 0,
+        "sunday": 0
+      },
+      "planning": [
+        {
+          "minute": 0,
+          "value": 1
+        }
+      ]
+    },
+    "filtration": {
+      "mode": 0,
+      "actualProg": 5,
+      "state": 0,
+      "swimming": {
+        "remainTime": 0,
+        "defaultTime": 3600
+      },
+      "pause": {
+        "remainTime": 0,
+        "defaultTime": 3600
+      },
+      "prog1": {
+        "prog": [
+          {
+            "temperatureMax": 26,
+            "steps": [
+              {
+                "minute": 540,
+                "mode": 1
+              },
+              {
+                "minute": 720,
+                "mode": 0
+              },
+              {
+                "minute": 840,
+                "mode": 1
+              },
+              {
+                "minute": 1020,
+                "mode": 0
+              }
+            ]
+          },
+          {
+            "temperatureMax": 85,
+            "steps": [
+              {
+                "minute": 540,
+                "mode": 1
+              },
+              {
+                "minute": 720,
+                "mode": 0
+              },
+              {
+                "minute": 840,
+                "mode": 1
+              },
+              {
+                "minute": 1140,
+                "mode": 0
+              }
+            ]
+          }
+        ],
+        "validity": null
+      },
+      "prog2": {
+        "prog": [
+          {
+            "temperatureMax": 99,
+            "steps": [
+              {
+                "minute": 480,
+                "mode": 3
+              },
+              {
+                "minute": 790,
+                "mode": 1
+              },
+              {
+                "minute": 910,
+                "mode": 3
+              },
+              {
+                "minute": 1110,
+                "mode": 0
+              }
+            ]
+          }
+        ],
+        "validity": null
+      },
+      "prog3": {
+        "prog": [
+          {
+            "temperatureMax": 99,
+            "steps": [
+              {
+                "minute": 0,
+                "mode": 0
+              }
+            ]
+          }
+        ],
+        "validity": null
+      },
+      "progAuto25": {
+        "prog": [
+          {
+            "temperatureMax": 99,
+            "steps": [
+              {
+                "minute": 480,
+                "mode": 1
+              },
+              {
+                "minute": 495,
+                "mode": 3
+              },
+              {
+                "minute": 540,
+                "mode": 1
+              },
+              {
+                "minute": 555,
+                "mode": 3
+              },
+              {
+                "minute": 600,
+                "mode": 1
+              },
+              {
+                "minute": 615,
+                "mode": 3
+              },
+              {
+                "minute": 660,
+                "mode": 1
+              },
+              {
+                "minute": 675,
+                "mode": 3
+              },
+              {
+                "minute": 720,
+                "mode": 1
+              },
+              {
+                "minute": 735,
+                "mode": 3
+              },
+              {
+                "minute": 780,
+                "mode": 1
+              },
+              {
+                "minute": 795,
+                "mode": 3
+              },
+              {
+                "minute": 840,
+                "mode": 1
+              },
+              {
+                "minute": 855,
+                "mode": 3
+              },
+              {
+                "minute": 900,
+                "mode": 1
+              },
+              {
+                "minute": 915,
+                "mode": 3
+              },
+              {
+                "minute": 960,
+                "mode": 0
+              }
+            ]
+          }
+        ],
+        "validity": null
+      },
+      "progAuto50": {
+        "prog": [
+          {
+            "temperatureMax": 99,
+            "steps": [
+              {
+                "minute": 480,
+                "mode": 1
+              },
+              {
+                "minute": 510,
+                "mode": 3
+              },
+              {
+                "minute": 540,
+                "mode": 1
+              },
+              {
+                "minute": 570,
+                "mode": 3
+              },
+              {
+                "minute": 600,
+                "mode": 1
+              },
+              {
+                "minute": 630,
+                "mode": 3
+              },
+              {
+                "minute": 660,
+                "mode": 1
+              },
+              {
+                "minute": 690,
+                "mode": 3
+              },
+              {
+                "minute": 720,
+                "mode": 1
+              },
+              {
+                "minute": 750,
+                "mode": 3
+              },
+              {
+                "minute": 780,
+                "mode": 1
+              },
+              {
+                "minute": 810,
+                "mode": 3
+              },
+              {
+                "minute": 840,
+                "mode": 1
+              },
+              {
+                "minute": 870,
+                "mode": 3
+              },
+              {
+                "minute": 900,
+                "mode": 1
+              },
+              {
+                "minute": 930,
+                "mode": 3
+              },
+              {
+                "minute": 960,
+                "mode": 0
+              }
+            ]
+          }
+        ],
+        "validity": null
+      },
+      "progNfx4": {
+        "prog": [
+          {
+            "temperatureMax": 14,
+            "steps": [
+              {
+                "minute": 600,
+                "mode": 1
+              },
+              {
+                "minute": 630,
+                "mode": 0
+              },
+              {
+                "minute": 840,
+                "mode": 1
+              },
+              {
+                "minute": 870,
+                "mode": 0
+              },
+              {
+                "minute": 1080,
+                "mode": 1
+              },
+              {
+                "minute": 1110,
+                "mode": 0
+              }
+            ]
+          },
+          {
+            "temperatureMax": 24,
+            "steps": [
+              {
+                "minute": 600,
+                "mode": 1
+              },
+              {
+                "minute": 630,
+                "mode": 3
+              },
+              {
+                "minute": 660,
+                "mode": 1
+              },
+              {
+                "minute": 675,
+                "mode": 3
+              },
+              {
+                "minute": 705,
+                "mode": 1
+              },
+              {
+                "minute": 720,
+                "mode": 3
+              },
+              {
+                "minute": 780,
+                "mode": 1
+              },
+              {
+                "minute": 795,
+                "mode": 3
+              },
+              {
+                "minute": 840,
+                "mode": 1
+              },
+              {
+                "minute": 855,
+                "mode": 3
+              },
+              {
+                "minute": 900,
+                "mode": 1
+              },
+              {
+                "minute": 915,
+                "mode": 3
+              },
+              {
+                "minute": 960,
+                "mode": 1
+              },
+              {
+                "minute": 975,
+                "mode": 3
+              },
+              {
+                "minute": 1020,
+                "mode": 1
+              },
+              {
+                "minute": 1035,
+                "mode": 3
+              },
+              {
+                "minute": 1065,
+                "mode": 1
+              },
+              {
+                "minute": 1080,
+                "mode": 0
+              }
+            ]
+          },
+          {
+            "temperatureMax": 28,
+            "steps": [
+              {
+                "minute": 570,
+                "mode": 1
+              },
+              {
+                "minute": 600,
+                "mode": 3
+              },
+              {
+                "minute": 645,
+                "mode": 1
+              },
+              {
+                "minute": 660,
+                "mode": 3
+              },
+              {
+                "minute": 705,
+                "mode": 1
+              },
+              {
+                "minute": 720,
+                "mode": 3
+              },
+              {
+                "minute": 780,
+                "mode": 1
+              },
+              {
+                "minute": 795,
+                "mode": 3
+              },
+              {
+                "minute": 840,
+                "mode": 1
+              },
+              {
+                "minute": 855,
+                "mode": 3
+              },
+              {
+                "minute": 900,
+                "mode": 1
+              },
+              {
+                "minute": 915,
+                "mode": 3
+              },
+              {
+                "minute": 960,
+                "mode": 1
+              },
+              {
+                "minute": 975,
+                "mode": 3
+              },
+              {
+                "minute": 1020,
+                "mode": 1
+              },
+              {
+                "minute": 1035,
+                "mode": 3
+              },
+              {
+                "minute": 1080,
+                "mode": 1
+              },
+              {
+                "minute": 1095,
+                "mode": 3
+              },
+              {
+                "minute": 1140,
+                "mode": 1
+              },
+              {
+                "minute": 1170,
+                "mode": 0
+              }
+            ]
+          },
+          {
+            "temperatureMax": 99,
+            "steps": [
+              {
+                "minute": 540,
+                "mode": 1
+              },
+              {
+                "minute": 570,
+                "mode": 3
+              },
+              {
+                "minute": 600,
+                "mode": 1
+              },
+              {
+                "minute": 615,
+                "mode": 3
+              },
+              {
+                "minute": 660,
+                "mode": 1
+              },
+              {
+                "minute": 675,
+                "mode": 3
+              },
+              {
+                "minute": 705,
+                "mode": 1
+              },
+              {
+                "minute": 720,
+                "mode": 3
+              },
+              {
+                "minute": 780,
+                "mode": 1
+              },
+              {
+                "minute": 795,
+                "mode": 3
+              },
+              {
+                "minute": 840,
+                "mode": 1
+              },
+              {
+                "minute": 855,
+                "mode": 3
+              },
+              {
+                "minute": 900,
+                "mode": 1
+              },
+              {
+                "minute": 915,
+                "mode": 3
+              },
+              {
+                "minute": 960,
+                "mode": 1
+              },
+              {
+                "minute": 975,
+                "mode": 3
+              },
+              {
+                "minute": 1020,
+                "mode": 1
+              },
+              {
+                "minute": 1035,
+                "mode": 3
+              },
+              {
+                "minute": 1080,
+                "mode": 1
+              },
+              {
+                "minute": 1095,
+                "mode": 3
+              },
+              {
+                "minute": 1170,
+                "mode": 1
+              },
+              {
+                "minute": 1200,
+                "mode": 0
+              }
+            ]
+          }
+        ],
+        "validity": null
+      },
+      "progServer": {
+        "prog": [],
+        "validity": null
+      },
+      "authorization": [
+        {
+          "minute": 480,
+          "value": 1
+        },
+        {
+          "minute": 960,
+          "value": 0
+        }
+      ],
+      "programAutoWantedTime": 480,
+      "solar": null,
+      "rollerStopRemainingTime": 0
+    },
+    "balneo": {
+      "presence": false,
+      "run": {
+        "remainTime": 0,
+        "defaultTime": 3600
+      },
+      "state": 0
+    },
+    "ncc": {
+      "presence": false,
+      "run": null,
+      "state": 0,
+      "mode": 0,
+      "speeds": [],
+      "programLoop": false,
+      "prog": null
+    },
+    "ncc2": {
+      "presence": false,
+      "run": null,
+      "state": 0,
+      "mode": 0,
+      "speeds": [],
+      "programLoop": false,
+      "prog": null
+    },
+    "filling": {
+      "presence": false,
+      "mode": 0,
+      "state": 0,
+      "timeout": 900,
+      "remainTime": 900,
+      "forcingTime": 180,
+      "full": true,
+      "alarmLowWaterLevelEnabled": false,
+      "source": null
+    },
+    "heater": {
+      "presence": true,
+      "mode": 0,
+      "state": -6,
+      "setpointActual": 29,
+      "filtrationPriority": true,
+      "boostRemainTime": 0,
+      "setpointModeEco": 200,
+      "setpointModeConfort": 290,
+      "planningAuthorization": [
+        {
+          "minute": 0,
+          "value": 1
+        },
+        {
+          "minute": 1440,
+          "value": 0
+        }
+      ],
+      "planningMode": [
+        {
+          "minute": 0,
+          "value": 0
+        }
+      ],
+      "smartRpm": null,
+      "solar": null,
+      "pacState": 0,
+      "pumpState": 0
+    },
+    "remote": {
+      "presence": false,
+      "number": 0,
+      "state": 0
+    },
+    "roller": {
+      "presence": false,
+      "mode": 0,
+      "state": -1,
+      "position": 1,
+      "planningAuthorization": [
+        {
+          "minute": 480,
+          "value": 1
+        },
+        {
+          "minute": 720,
+          "value": 0
+        },
+        {
+          "minute": 840,
+          "value": 1
+        },
+        {
+          "minute": 1200,
+          "value": 0
+        }
+      ]
+    },
+    "accessories": {
+      "accessory1": {
+        "presence": false,
+        "available": false,
+        "mode": 0,
+        "state": 0,
+        "remoteBtn": 0,
+        "alarmEnabled": false,
+        "temperatures": null,
+        "followedPump": 0,
+        "name": "",
+        "planningDays": null,
+        "planning": []
+      },
+      "accessory2": {
+        "presence": false,
+        "available": true,
+        "mode": 0,
+        "state": 0,
+        "remoteBtn": 0,
+        "alarmEnabled": false,
+        "temperatures": null,
+        "followedPump": 0,
+        "name": "",
+        "planningDays": null,
+        "planning": []
+      },
+      "accessory3": {
+        "presence": false,
+        "available": false,
+        "mode": 0,
+        "state": 0,
+        "remoteBtn": 0,
+        "alarmEnabled": false,
+        "temperatures": null,
+        "followedPump": 0,
+        "name": "",
+        "planningDays": null,
+        "planning": []
+      },
+      "accessory4": {
+        "presence": false,
+        "available": true,
+        "mode": 0,
+        "state": 0,
+        "remoteBtn": 0,
+        "alarmEnabled": false,
+        "temperatures": null,
+        "followedPump": 0,
+        "name": "",
+        "planningDays": null,
+        "planning": []
+      },
+      "accessory5": {
+        "presence": false,
+        "available": true,
+        "mode": 0,
+        "state": 0,
+        "remoteBtn": 0,
+        "alarmEnabled": false,
+        "temperatures": null,
+        "followedPump": 0,
+        "name": "",
+        "planningDays": null,
+        "planning": []
+      },
+      "accessory6": {
+        "presence": false,
+        "available": true,
+        "mode": 0,
+        "state": 0,
+        "remoteBtn": 0,
+        "alarmEnabled": false,
+        "temperatures": null,
+        "followedPump": 0,
+        "name": "",
+        "planningDays": null,
+        "planning": []
+      }
+    },
+    "wintering": {
+      "active": true,
+      "mode": 1,
+      "nccMode": 0,
+      "state": 2,
+      "leftTimeInState": 0,
+      "alarmTemperature": 5,
+      "level1": {
+        "temperature": 0,
+        "minutes": 15
+      },
+      "level2": {
+        "temperature": -10,
+        "minutes": 30
+      }
+    },
+    "stats": {
+      "waterTemp": [
+        {
+          "date": "2026-02-07T22:00:00Z",
+          "value": 7.213774
+        },
+        {
+          "date": "2026-02-07T22:15:00Z",
+          "value": 7.1474085
+        },
+        {
+          "date": "2026-02-07T22:30:00Z",
+          "value": 7.1
+        },
+        {
+          "date": "2026-02-07T22:45:00Z",
+          "value": 7.0815516
+        },
+        {
+          "date": "2026-02-07T23:00:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-07T23:15:00Z",
+          "value": 6.981847
+        },
+        {
+          "date": "2026-02-07T23:30:00Z",
+          "value": 6.9333396
+        },
+        {
+          "date": "2026-02-07T23:45:00Z",
+          "value": 6.831753
+        },
+        {
+          "date": "2026-02-08T00:00:00Z",
+          "value": 6.598645
+        },
+        {
+          "date": "2026-02-08T00:15:00Z",
+          "value": 6.4833274
+        },
+        {
+          "date": "2026-02-08T00:30:00Z",
+          "value": 6.4
+        },
+        {
+          "date": "2026-02-08T00:45:00Z",
+          "value": 6.4
+        },
+        {
+          "date": "2026-02-08T01:00:00Z",
+          "value": 6.4
+        },
+        {
+          "date": "2026-02-08T01:15:00Z",
+          "value": 6.4828873
+        },
+        {
+          "date": "2026-02-08T01:30:00Z",
+          "value": 6.4177804
+        },
+        {
+          "date": "2026-02-08T01:45:00Z",
+          "value": 6.4
+        },
+        {
+          "date": "2026-02-08T02:00:00Z",
+          "value": 6.3515573
+        },
+        {
+          "date": "2026-02-08T02:15:00Z",
+          "value": 6.3
+        },
+        {
+          "date": "2026-02-08T02:30:00Z",
+          "value": 6.2522297
+        },
+        {
+          "date": "2026-02-08T02:45:00Z",
+          "value": 6.2
+        },
+        {
+          "date": "2026-02-08T03:00:00Z",
+          "value": 6.2
+        },
+        {
+          "date": "2026-02-08T03:15:00Z",
+          "value": 6.166665
+        },
+        {
+          "date": "2026-02-08T03:30:00Z",
+          "value": 6.166232
+        },
+        {
+          "date": "2026-02-08T03:45:00Z",
+          "value": 6.120434
+        },
+        {
+          "date": "2026-02-08T04:00:00Z",
+          "value": 6.1
+        },
+        {
+          "date": "2026-02-08T04:15:00Z",
+          "value": 6.1
+        },
+        {
+          "date": "2026-02-08T04:30:00Z",
+          "value": 6.0666595
+        },
+        {
+          "date": "2026-02-08T04:45:00Z",
+          "value": 6.0215664
+        },
+        {
+          "date": "2026-02-08T05:00:00Z",
+          "value": 6
+        },
+        {
+          "date": "2026-02-08T05:15:00Z",
+          "value": 5.9893484
+        },
+        {
+          "date": "2026-02-08T05:30:00Z",
+          "value": 5.9672747
+        },
+        {
+          "date": "2026-02-08T05:45:00Z",
+          "value": 5.9
+        },
+        {
+          "date": "2026-02-08T06:00:00Z",
+          "value": 5.9
+        },
+        {
+          "date": "2026-02-08T06:15:00Z",
+          "value": 5.824466
+        },
+        {
+          "date": "2026-02-08T06:30:00Z",
+          "value": 5.8
+        },
+        {
+          "date": "2026-02-08T06:45:00Z",
+          "value": 5.8
+        },
+        {
+          "date": "2026-02-08T07:00:00Z",
+          "value": 5.8
+        },
+        {
+          "date": "2026-02-08T07:15:00Z",
+          "value": 5.792676
+        },
+        {
+          "date": "2026-02-08T07:30:00Z",
+          "value": 5.7344117
+        },
+        {
+          "date": "2026-02-08T07:45:00Z",
+          "value": 5.7
+        },
+        {
+          "date": "2026-02-08T08:00:00Z",
+          "value": 5.7333355
+        },
+        {
+          "date": "2026-02-08T08:15:00Z",
+          "value": 5.7
+        },
+        {
+          "date": "2026-02-08T08:30:00Z",
+          "value": 5.7
+        },
+        {
+          "date": "2026-02-08T08:45:00Z",
+          "value": 5.73734
+        },
+        {
+          "date": "2026-02-08T09:00:00Z",
+          "value": 5.7922173
+        },
+        {
+          "date": "2026-02-08T09:15:00Z",
+          "value": 5.5424047
+        },
+        {
+          "date": "2026-02-08T09:30:00Z",
+          "value": 5.52068
+        },
+        {
+          "date": "2026-02-08T09:45:00Z",
+          "value": 5.4874787
+        },
+        {
+          "date": "2026-02-08T10:00:00Z",
+          "value": 5.4
+        },
+        {
+          "date": "2026-02-08T10:15:00Z",
+          "value": 5.4
+        },
+        {
+          "date": "2026-02-08T10:30:00Z",
+          "value": 5.4457693
+        },
+        {
+          "date": "2026-02-08T10:45:00Z",
+          "value": 5.591271
+        },
+        {
+          "date": "2026-02-08T11:00:00Z",
+          "value": 5.8030195
+        },
+        {
+          "date": "2026-02-08T11:15:00Z",
+          "value": 6.0575
+        },
+        {
+          "date": "2026-02-08T11:30:00Z",
+          "value": 6.336198
+        },
+        {
+          "date": "2026-02-08T11:45:00Z",
+          "value": 6.557215
+        },
+        {
+          "date": "2026-02-08T12:00:00Z",
+          "value": 6.7451143
+        },
+        {
+          "date": "2026-02-08T12:15:00Z",
+          "value": 6.890096
+        },
+        {
+          "date": "2026-02-08T12:30:00Z",
+          "value": 7.0448647
+        },
+        {
+          "date": "2026-02-08T12:45:00Z",
+          "value": 7.144744
+        },
+        {
+          "date": "2026-02-08T13:00:00Z",
+          "value": 7.118552
+        },
+        {
+          "date": "2026-02-08T13:15:00Z",
+          "value": 5.8332577
+        },
+        {
+          "date": "2026-02-08T13:30:00Z",
+          "value": 5.8777456
+        },
+        {
+          "date": "2026-02-08T13:45:00Z",
+          "value": 6.177694
+        },
+        {
+          "date": "2026-02-08T14:00:00Z",
+          "value": 6.532927
+        },
+        {
+          "date": "2026-02-08T14:15:00Z",
+          "value": 6.7885795
+        },
+        {
+          "date": "2026-02-08T14:30:00Z",
+          "value": 6.9548826
+        },
+        {
+          "date": "2026-02-08T14:45:00Z",
+          "value": 7.143992
+        },
+        {
+          "date": "2026-02-08T15:00:00Z",
+          "value": 7.2877884
+        },
+        {
+          "date": "2026-02-08T15:15:00Z",
+          "value": 7.443793
+        },
+        {
+          "date": "2026-02-08T15:30:00Z",
+          "value": 7.587368
+        },
+        {
+          "date": "2026-02-08T15:45:00Z",
+          "value": 7.7436295
+        },
+        {
+          "date": "2026-02-08T16:00:00Z",
+          "value": 7.8436203
+        },
+        {
+          "date": "2026-02-08T16:15:00Z",
+          "value": 7.9768896
+        },
+        {
+          "date": "2026-02-08T16:30:00Z",
+          "value": 8.076759
+        },
+        {
+          "date": "2026-02-08T16:45:00Z",
+          "value": 8.176643
+        },
+        {
+          "date": "2026-02-08T17:00:00Z",
+          "value": 7.9832773
+        },
+        {
+          "date": "2026-02-08T17:15:00Z",
+          "value": 5.923483
+        },
+        {
+          "date": "2026-02-08T17:30:00Z",
+          "value": 5.909642
+        },
+        {
+          "date": "2026-02-08T17:45:00Z",
+          "value": 6.085799
+        },
+        {
+          "date": "2026-02-08T18:00:00Z",
+          "value": 6.242702
+        },
+        {
+          "date": "2026-02-08T18:15:00Z",
+          "value": 6.3
+        },
+        {
+          "date": "2026-02-08T18:30:00Z",
+          "value": 6.3758516
+        },
+        {
+          "date": "2026-02-08T18:45:00Z",
+          "value": 6.4
+        },
+        {
+          "date": "2026-02-08T19:00:00Z",
+          "value": 6.408953
+        },
+        {
+          "date": "2026-02-08T19:15:00Z",
+          "value": 6.4666023
+        },
+        {
+          "date": "2026-02-08T19:30:00Z",
+          "value": 6.5
+        },
+        {
+          "date": "2026-02-08T19:45:00Z",
+          "value": 6.5
+        },
+        {
+          "date": "2026-02-08T20:00:00Z",
+          "value": 6.5
+        },
+        {
+          "date": "2026-02-08T20:15:00Z",
+          "value": 6.5
+        },
+        {
+          "date": "2026-02-08T20:30:00Z",
+          "value": 6.541777
+        },
+        {
+          "date": "2026-02-08T20:45:00Z",
+          "value": 6.566659
+        },
+        {
+          "date": "2026-02-08T21:00:00Z",
+          "value": 6.6
+        },
+        {
+          "date": "2026-02-08T21:15:00Z",
+          "value": 6.5252213
+        },
+        {
+          "date": "2026-02-08T21:30:00Z",
+          "value": 6.5
+        },
+        {
+          "date": "2026-02-08T21:45:00Z",
+          "value": 6.5
+        }
+      ],
+      "ph": [
+        {
+          "date": "2026-02-07T22:00:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-07T22:15:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-07T22:30:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-07T22:45:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-07T23:00:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-07T23:15:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-07T23:30:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-07T23:45:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T00:00:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T00:15:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T00:30:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T00:45:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T01:00:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T01:15:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T01:30:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T01:45:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T02:00:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T02:15:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T02:30:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T02:45:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T03:00:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T03:15:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T03:30:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T03:45:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T04:00:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T04:15:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T04:30:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T04:45:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T05:00:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T05:15:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T05:30:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T05:45:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T06:00:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T06:15:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T06:30:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T06:45:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T07:00:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T07:15:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T07:30:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T07:45:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T08:00:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T08:15:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T08:30:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T08:45:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T09:00:00Z",
+          "value": 10
+        },
+        {
+          "date": "2026-02-08T09:15:00Z",
+          "value": 7.8920794
+        },
+        {
+          "date": "2026-02-08T09:30:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T09:45:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T10:00:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T10:15:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T10:30:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T10:45:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T11:00:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T11:15:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T11:30:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T11:45:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T12:00:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T12:15:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T12:30:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T12:45:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T13:00:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T13:15:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T13:30:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T13:45:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T14:00:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T14:15:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T14:30:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T14:45:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T15:00:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T15:15:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T15:30:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T15:45:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T16:00:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T16:15:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T16:30:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T16:45:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T17:00:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T17:15:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T17:30:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T17:45:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T18:00:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T18:15:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T18:30:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T18:45:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T19:00:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T19:15:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T19:30:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T19:45:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T20:00:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T20:15:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T20:30:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T20:45:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T21:00:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T21:15:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T21:30:00Z",
+          "value": 7
+        },
+        {
+          "date": "2026-02-08T21:45:00Z",
+          "value": 7
+        }
+      ],
+      "orp": [
+        {
+          "date": "2026-02-07T22:00:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-07T22:15:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-07T22:30:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-07T22:45:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-07T23:00:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-07T23:15:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-07T23:30:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-07T23:45:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T00:00:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T00:15:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T00:30:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T00:45:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T01:00:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T01:15:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T01:30:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T01:45:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T02:00:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T02:15:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T02:30:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T02:45:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T03:00:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T03:15:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T03:30:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T03:45:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T04:00:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T04:15:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T04:30:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T04:45:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T05:00:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T05:15:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T05:30:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T05:45:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T06:00:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T06:15:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T06:30:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T06:45:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T07:00:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T07:15:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T07:30:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T07:45:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T08:00:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T08:15:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T08:30:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T08:45:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T09:00:00Z",
+          "value": 0
+        },
+        {
+          "date": "2026-02-08T09:15:00Z",
+          "value": 260.25467
+        },
+        {
+          "date": "2026-02-08T09:30:00Z",
+          "value": 386.13666
+        },
+        {
+          "date": "2026-02-08T09:45:00Z",
+          "value": 390.9173
+        },
+        {
+          "date": "2026-02-08T10:00:00Z",
+          "value": 393.5834
+        },
+        {
+          "date": "2026-02-08T10:15:00Z",
+          "value": 395.37457
+        },
+        {
+          "date": "2026-02-08T10:30:00Z",
+          "value": 397.915
+        },
+        {
+          "date": "2026-02-08T10:45:00Z",
+          "value": 398.332
+        },
+        {
+          "date": "2026-02-08T11:00:00Z",
+          "value": 399.78824
+        },
+        {
+          "date": "2026-02-08T11:15:00Z",
+          "value": 400.66672
+        },
+        {
+          "date": "2026-02-08T11:30:00Z",
+          "value": 401.24094
+        },
+        {
+          "date": "2026-02-08T11:45:00Z",
+          "value": 401.66653
+        },
+        {
+          "date": "2026-02-08T12:00:00Z",
+          "value": 401.6661
+        },
+        {
+          "date": "2026-02-08T12:15:00Z",
+          "value": 402.11636
+        },
+        {
+          "date": "2026-02-08T12:30:00Z",
+          "value": 403
+        },
+        {
+          "date": "2026-02-08T12:45:00Z",
+          "value": 403
+        },
+        {
+          "date": "2026-02-08T13:00:00Z",
+          "value": 403.11377
+        },
+        {
+          "date": "2026-02-08T13:15:00Z",
+          "value": 403.10757
+        },
+        {
+          "date": "2026-02-08T13:30:00Z",
+          "value": 400.88715
+        },
+        {
+          "date": "2026-02-08T13:45:00Z",
+          "value": 401
+        },
+        {
+          "date": "2026-02-08T14:00:00Z",
+          "value": 400.66663
+        },
+        {
+          "date": "2026-02-08T14:15:00Z",
+          "value": 401.1093
+        },
+        {
+          "date": "2026-02-08T14:30:00Z",
+          "value": 401.666
+        },
+        {
+          "date": "2026-02-08T14:45:00Z",
+          "value": 402.43933
+        },
+        {
+          "date": "2026-02-08T15:00:00Z",
+          "value": 403
+        },
+        {
+          "date": "2026-02-08T15:15:00Z",
+          "value": 402.66605
+        },
+        {
+          "date": "2026-02-08T15:30:00Z",
+          "value": 403
+        },
+        {
+          "date": "2026-02-08T15:45:00Z",
+          "value": 403.10275
+        },
+        {
+          "date": "2026-02-08T16:00:00Z",
+          "value": 403.66663
+        },
+        {
+          "date": "2026-02-08T16:15:00Z",
+          "value": 404.3334
+        },
+        {
+          "date": "2026-02-08T16:30:00Z",
+          "value": 403.66617
+        },
+        {
+          "date": "2026-02-08T16:45:00Z",
+          "value": 403.76477
+        },
+        {
+          "date": "2026-02-08T17:00:00Z",
+          "value": 404.76495
+        },
+        {
+          "date": "2026-02-08T17:15:00Z",
+          "value": 404.37296
+        },
+        {
+          "date": "2026-02-08T17:30:00Z",
+          "value": 401.70987
+        },
+        {
+          "date": "2026-02-08T17:45:00Z",
+          "value": 400.0948
+        },
+        {
+          "date": "2026-02-08T18:00:00Z",
+          "value": 401.42688
+        },
+        {
+          "date": "2026-02-08T18:15:00Z",
+          "value": 401.66602
+        },
+        {
+          "date": "2026-02-08T18:30:00Z",
+          "value": 402.0916
+        },
+        {
+          "date": "2026-02-08T18:45:00Z",
+          "value": 402.3322
+        },
+        {
+          "date": "2026-02-08T19:00:00Z",
+          "value": 403
+        },
+        {
+          "date": "2026-02-08T19:15:00Z",
+          "value": 403.42233
+        },
+        {
+          "date": "2026-02-08T19:30:00Z",
+          "value": 403.5787
+        },
+        {
+          "date": "2026-02-08T19:45:00Z",
+          "value": 403.754
+        },
+        {
+          "date": "2026-02-08T20:00:00Z",
+          "value": 404.33398
+        },
+        {
+          "date": "2026-02-08T20:15:00Z",
+          "value": 404.08554
+        },
+        {
+          "date": "2026-02-08T20:30:00Z",
+          "value": 404.666
+        },
+        {
+          "date": "2026-02-08T20:45:00Z",
+          "value": 405
+        },
+        {
+          "date": "2026-02-08T21:00:00Z",
+          "value": 405
+        },
+        {
+          "date": "2026-02-08T21:15:00Z",
+          "value": 405
+        },
+        {
+          "date": "2026-02-08T21:30:00Z",
+          "value": 405
+        },
+        {
+          "date": "2026-02-08T21:45:00Z",
+          "value": 405
+        }
+      ],
+      "airTemp": [
+        {
+          "date": "2026-02-07T22:00:00Z",
+          "value": 5.947107
+        },
+        {
+          "date": "2026-02-07T22:15:00Z",
+          "value": 5.9
+        },
+        {
+          "date": "2026-02-07T22:30:00Z",
+          "value": 5.7956123
+        },
+        {
+          "date": "2026-02-07T22:45:00Z",
+          "value": 5.596408
+        },
+        {
+          "date": "2026-02-07T23:00:00Z",
+          "value": 5.5148907
+        },
+        {
+          "date": "2026-02-07T23:15:00Z",
+          "value": 5.2453403
+        },
+        {
+          "date": "2026-02-07T23:30:00Z",
+          "value": 5.268918
+        },
+        {
+          "date": "2026-02-07T23:45:00Z",
+          "value": 5.2490954
+        },
+        {
+          "date": "2026-02-08T00:00:00Z",
+          "value": 5.182654
+        },
+        {
+          "date": "2026-02-08T00:15:00Z",
+          "value": 5.1166577
+        },
+        {
+          "date": "2026-02-08T00:30:00Z",
+          "value": 4.833307
+        },
+        {
+          "date": "2026-02-08T00:45:00Z",
+          "value": 4.8666773
+        },
+        {
+          "date": "2026-02-08T01:00:00Z",
+          "value": 4.8
+        },
+        {
+          "date": "2026-02-08T01:15:00Z",
+          "value": 4.569747
+        },
+        {
+          "date": "2026-02-08T01:30:00Z",
+          "value": 4.4
+        },
+        {
+          "date": "2026-02-08T01:45:00Z",
+          "value": 4.3515406
+        },
+        {
+          "date": "2026-02-08T02:00:00Z",
+          "value": 4.1842275
+        },
+        {
+          "date": "2026-02-08T02:15:00Z",
+          "value": 4.089967
+        },
+        {
+          "date": "2026-02-08T02:30:00Z",
+          "value": 3.981118
+        },
+        {
+          "date": "2026-02-08T02:45:00Z",
+          "value": 3.8575215
+        },
+        {
+          "date": "2026-02-08T03:00:00Z",
+          "value": 3.7
+        },
+        {
+          "date": "2026-02-08T03:15:00Z",
+          "value": 3.8140087
+        },
+        {
+          "date": "2026-02-08T03:30:00Z",
+          "value": 3.787093
+        },
+        {
+          "date": "2026-02-08T03:45:00Z",
+          "value": 3.620428
+        },
+        {
+          "date": "2026-02-08T04:00:00Z",
+          "value": 3.507567
+        },
+        {
+          "date": "2026-02-08T04:15:00Z",
+          "value": 3.195653
+        },
+        {
+          "date": "2026-02-08T04:30:00Z",
+          "value": 3.1451235
+        },
+        {
+          "date": "2026-02-08T04:45:00Z",
+          "value": 3.0646868
+        },
+        {
+          "date": "2026-02-08T05:00:00Z",
+          "value": 3.1534119
+        },
+        {
+          "date": "2026-02-08T05:15:00Z",
+          "value": 3.1146858
+        },
+        {
+          "date": "2026-02-08T05:30:00Z",
+          "value": 2.4925387
+        },
+        {
+          "date": "2026-02-08T05:45:00Z",
+          "value": 2.4716318
+        },
+        {
+          "date": "2026-02-08T06:00:00Z",
+          "value": 2.7000234
+        },
+        {
+          "date": "2026-02-08T06:15:00Z",
+          "value": 2.557797
+        },
+        {
+          "date": "2026-02-08T06:30:00Z",
+          "value": 2.3497264
+        },
+        {
+          "date": "2026-02-08T06:45:00Z",
+          "value": 2.4333591
+        },
+        {
+          "date": "2026-02-08T07:00:00Z",
+          "value": 2.2248933
+        },
+        {
+          "date": "2026-02-08T07:15:00Z",
+          "value": 2.2333481
+        },
+        {
+          "date": "2026-02-08T07:30:00Z",
+          "value": 2.1197717
+        },
+        {
+          "date": "2026-02-08T07:45:00Z",
+          "value": 2
+        },
+        {
+          "date": "2026-02-08T08:00:00Z",
+          "value": 1.8937824
+        },
+        {
+          "date": "2026-02-08T08:15:00Z",
+          "value": 1.8717844
+        },
+        {
+          "date": "2026-02-08T08:30:00Z",
+          "value": 2.1147923
+        },
+        {
+          "date": "2026-02-08T08:45:00Z",
+          "value": 2.4493842
+        },
+        {
+          "date": "2026-02-08T09:00:00Z",
+          "value": 2.7038963
+        },
+        {
+          "date": "2026-02-08T09:15:00Z",
+          "value": 2.6823955
+        },
+        {
+          "date": "2026-02-08T09:30:00Z",
+          "value": 2.7045016
+        },
+        {
+          "date": "2026-02-08T09:45:00Z",
+          "value": 3.025109
+        },
+        {
+          "date": "2026-02-08T10:00:00Z",
+          "value": 3.237564
+        },
+        {
+          "date": "2026-02-08T10:15:00Z",
+          "value": 3.5375297
+        },
+        {
+          "date": "2026-02-08T10:30:00Z",
+          "value": 3.8830955
+        },
+        {
+          "date": "2026-02-08T10:45:00Z",
+          "value": 4.236923
+        },
+        {
+          "date": "2026-02-08T11:00:00Z",
+          "value": 4.5484767
+        },
+        {
+          "date": "2026-02-08T11:15:00Z",
+          "value": 5.0150313
+        },
+        {
+          "date": "2026-02-08T11:30:00Z",
+          "value": 5.257468
+        },
+        {
+          "date": "2026-02-08T11:45:00Z",
+          "value": 5.4453115
+        },
+        {
+          "date": "2026-02-08T12:00:00Z",
+          "value": 5.5117846
+        },
+        {
+          "date": "2026-02-08T12:15:00Z",
+          "value": 5.6116576
+        },
+        {
+          "date": "2026-02-08T12:30:00Z",
+          "value": 5.7
+        },
+        {
+          "date": "2026-02-08T12:45:00Z",
+          "value": 5.7781343
+        },
+        {
+          "date": "2026-02-08T13:00:00Z",
+          "value": 5.889476
+        },
+        {
+          "date": "2026-02-08T13:15:00Z",
+          "value": 6.044643
+        },
+        {
+          "date": "2026-02-08T13:30:00Z",
+          "value": 6.2224603
+        },
+        {
+          "date": "2026-02-08T13:45:00Z",
+          "value": 6.3778186
+        },
+        {
+          "date": "2026-02-08T14:00:00Z",
+          "value": 6.4443216
+        },
+        {
+          "date": "2026-02-08T14:15:00Z",
+          "value": 6.533338
+        },
+        {
+          "date": "2026-02-08T14:30:00Z",
+          "value": 6.5
+        },
+        {
+          "date": "2026-02-08T14:45:00Z",
+          "value": 6.5773444
+        },
+        {
+          "date": "2026-02-08T15:00:00Z",
+          "value": 6.6
+        },
+        {
+          "date": "2026-02-08T15:15:00Z",
+          "value": 6.6
+        },
+        {
+          "date": "2026-02-08T15:30:00Z",
+          "value": 6.6
+        },
+        {
+          "date": "2026-02-08T15:45:00Z",
+          "value": 6.6
+        },
+        {
+          "date": "2026-02-08T16:00:00Z",
+          "value": 6.6769614
+        },
+        {
+          "date": "2026-02-08T16:15:00Z",
+          "value": 6.7435555
+        },
+        {
+          "date": "2026-02-08T16:30:00Z",
+          "value": 6.8
+        },
+        {
+          "date": "2026-02-08T16:45:00Z",
+          "value": 6.790123
+        },
+        {
+          "date": "2026-02-08T17:00:00Z",
+          "value": 6.656804
+        },
+        {
+          "date": "2026-02-08T17:15:00Z",
+          "value": 6.5137434
+        },
+        {
+          "date": "2026-02-08T17:30:00Z",
+          "value": 6.390353
+        },
+        {
+          "date": "2026-02-08T17:45:00Z",
+          "value": 6.2905006
+        },
+        {
+          "date": "2026-02-08T18:00:00Z",
+          "value": 6.1145706
+        },
+        {
+          "date": "2026-02-08T18:15:00Z",
+          "value": 6
+        },
+        {
+          "date": "2026-02-08T18:30:00Z",
+          "value": 5.9149594
+        },
+        {
+          "date": "2026-02-08T18:45:00Z",
+          "value": 5.8
+        },
+        {
+          "date": "2026-02-08T19:00:00Z",
+          "value": 5.724294
+        },
+        {
+          "date": "2026-02-08T19:15:00Z",
+          "value": 5.6244006
+        },
+        {
+          "date": "2026-02-08T19:30:00Z",
+          "value": 5.6
+        },
+        {
+          "date": "2026-02-08T19:45:00Z",
+          "value": 5.4824953
+        },
+        {
+          "date": "2026-02-08T20:00:00Z",
+          "value": 5.324586
+        },
+        {
+          "date": "2026-02-08T20:15:00Z",
+          "value": 5.3
+        },
+        {
+          "date": "2026-02-08T20:30:00Z",
+          "value": 5.3751726
+        },
+        {
+          "date": "2026-02-08T20:45:00Z",
+          "value": 5.358379
+        },
+        {
+          "date": "2026-02-08T21:00:00Z",
+          "value": 5.3
+        },
+        {
+          "date": "2026-02-08T21:15:00Z",
+          "value": 5.2585764
+        },
+        {
+          "date": "2026-02-08T21:30:00Z",
+          "value": 5.0919137
+        },
+        {
+          "date": "2026-02-08T21:45:00Z",
+          "value": 4.834484
+        }
+      ],
+      "thirdTemp": [
+        {
+          "date": "2026-02-07T22:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-07T22:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-07T22:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-07T22:45:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-07T23:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-07T23:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-07T23:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-07T23:45:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T00:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T00:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T00:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T00:45:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T01:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T01:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T01:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T01:45:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T02:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T02:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T02:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T02:45:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T03:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T03:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T03:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T03:45:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T04:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T04:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T04:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T04:45:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T05:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T05:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T05:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T05:45:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T06:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T06:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T06:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T06:45:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T07:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T07:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T07:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T07:45:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T08:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T08:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T08:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T08:45:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T09:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T09:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T09:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T09:45:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T10:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T10:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T10:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T10:45:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T11:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T11:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T11:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T11:45:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T12:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T12:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T12:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T12:45:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T13:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T13:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T13:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T13:45:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T14:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T14:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T14:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T14:45:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T15:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T15:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T15:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T15:45:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T16:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T16:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T16:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T16:45:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T17:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T17:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T17:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T17:45:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T18:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T18:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T18:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T18:45:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T19:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T19:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T19:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T19:45:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T20:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T20:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T20:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T20:45:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T21:00:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T21:15:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T21:30:00Z",
+          "value": -40
+        },
+        {
+          "date": "2026-02-08T21:45:00Z",
+          "value": -40
+        }
+      ],
+      "treatmentPh": [],
+      "treatmentChlore": [],
+      "treatmentProduct1": [],
+      "treatmentProduct2": [],
+      "heaterSetpoint": [],
+      "energyInjectedLinky": [],
+      "energyInjectedProbe1": [],
+      "energyUsedLinky": [],
+      "energyUsedProbe2": [],
+      "energyUsedProbe3": [],
+      "energyUsedProbe4": [],
+      "powerPumpFx1": [],
+      "powerPumpFx2": [],
+      "powerPumpFx3": [],
+      "powerPumpFx4": [],
+      "powerPumpFx5": [],
+      "powerPumpNcc1": [],
+      "powerPumpNcc2": []
+    },
+    "alarms": {
+      "inProgress": {
+        "numbers": 0,
+        "alarms": []
+      },
+      "history": [
+        {
+          "id": 4,
+          "start": "2026-02-01T18:22:39Z",
+          "end": "2026-02-08T09:09:52Z",
+          "args": []
+        },
+        {
+          "id": 4,
+          "start": "2026-01-31T08:23:30Z",
+          "end": "2026-02-01T18:22:33Z",
+          "args": []
+        },
+        {
+          "id": 48,
+          "start": "2026-01-08T18:28:24Z",
+          "end": "2026-01-19T13:05:01Z",
+          "args": []
+        },
+        {
+          "id": 48,
+          "start": "2026-01-02T08:50:22Z",
+          "end": "2026-01-08T18:22:07Z",
+          "args": []
+        },
+        {
+          "id": 48,
+          "start": "2025-12-31T20:47:01Z",
+          "end": "2026-01-02T08:49:22Z",
+          "args": []
+        },
+        {
+          "id": 66,
+          "start": "2025-09-15T21:55:32Z",
+          "end": "2025-09-16T04:53:10Z",
+          "args": []
+        },
+        {
+          "id": 66,
+          "start": "2025-08-24T21:48:05Z",
+          "end": "2025-08-25T05:18:05Z",
+          "args": []
+        },
+        {
+          "id": 0,
+          "start": "2025-08-13T12:48:31Z",
+          "end": "2025-08-13T16:29:14Z",
+          "args": []
+        },
+        {
+          "id": 4,
+          "start": "2025-08-09T14:11:22Z",
+          "end": "2025-08-09T14:11:30Z",
+          "args": []
+        },
+        {
+          "id": 4,
+          "start": "2025-08-09T14:09:14Z",
+          "end": "2025-08-09T14:09:30Z",
+          "args": []
+        }
+      ],
+      "resetNb": 0
+    },
+    "tests": {
+      "numbers": 0,
+      "tests": []
+    },
+    "treatment": {
+      "ph": {
+        "presence": true,
+        "mode": 1,
+        "state": -1,
+        "setpoint": 7.2,
+        "setpointDelta": 1,
+        "timeout": 18000,
+        "temperatureMin": 11,
+        "treatmentLevel": 0,
+        "containerEmpty": false,
+        "pumpPrimingRemainTime": 0,
+        "measureRemainTime": 0
+      },
+      "chlorine": {
+        "presence": false,
+        "mode": 0,
+        "state": 0,
+        "setpoint": 650,
+        "setpointDelta": 50,
+        "timeout": 7200,
+        "temperatureMin": 10,
+        "phDeltaMax": 2,
+        "treatmentLevel": 0,
+        "containerEmpty": false,
+        "pumpPrimingRemainTime": 0,
+        "measureRemainTime": 0
+      },
+      "electrolyzer": {
+        "presence": true,
+        "mode": 1,
+        "state": -1,
+        "setpoint": 680,
+        "setpointDelta": 3,
+        "timeout": 43200,
+        "temperatureMin": 14,
+        "phDeltaMax": 0.4,
+        "testRemainTime": 0,
+        "measureRemainTime": 0,
+        "boostRemainTime": 0,
+        "chocDuration": 60,
+        "level": 100,
+        "electrodeSn": 0
+      },
+      "bromine": {
+        "presence": false,
+        "mode": 0,
+        "state": 0,
+        "setpoint": 650,
+        "setpointDelta": 50,
+        "timeout": 7200,
+        "temperatureMin": 16,
+        "phDeltaMax": 2,
+        "primingRemainTime": 0,
+        "measureRemainTime": 0
+      },
+      "product1": {
+        "presence": false,
+        "mode": 0,
+        "state": 0,
+        "setpoint": 0,
+        "productCounter": 0,
+        "containerCapacity": 0,
+        "planningDays": {
+          "monday": 0,
+          "tuesday": 0,
+          "wednesday": 0,
+          "thursday": 0,
+          "friday": 0,
+          "saturday": 0,
+          "sunday": 0
+        },
+        "pumpPrimingRemainTime": 0,
+        "name": ""
+      },
+      "product2": {
+        "presence": false,
+        "mode": 0,
+        "state": 0,
+        "setpoint": 0,
+        "productCounter": 0,
+        "containerCapacity": 0,
+        "planningDays": {
+          "monday": 0,
+          "tuesday": 0,
+          "wednesday": 0,
+          "thursday": 0,
+          "friday": 0,
+          "saturday": 0,
+          "sunday": 0
+        },
+        "pumpPrimingRemainTime": 0,
+        "name": ""
+      }
+    },
+    "events": [
+      {
+        "datetime": {
+          "timezone": "",
+          "utc": "2026-02-08T17:30:00+0000",
+          "localtime": "2026-02-08T18:30:00+0100"
+        },
+        "eventId": 1000,
+        "args": [
+          "1",
+          "0"
+        ],
+        "source": "system",
+        "uuid": "8BDEB59FCB97EFB401ED018324D9EFB5"
+      },
+      {
+        "datetime": {
+          "timezone": "",
+          "utc": "2026-02-08T17:00:00+0000",
+          "localtime": "2026-02-08T18:00:00+0100"
+        },
+        "eventId": 1000,
+        "args": [
+          "0",
+          "1"
+        ],
+        "source": "system",
+        "uuid": "C4F89821FAE865A7EBCFB868B53DED47"
+      },
+      {
+        "datetime": {
+          "timezone": "",
+          "utc": "2026-02-08T13:30:00+0000",
+          "localtime": "2026-02-08T14:30:00+0100"
+        },
+        "eventId": 1000,
+        "args": [
+          "1",
+          "0"
+        ],
+        "source": "system",
+        "uuid": "8EC4ACAEF66D58EB6243564EE1FD8F5D"
+      },
+      {
+        "datetime": {
+          "timezone": "",
+          "utc": "2026-02-08T13:00:00+0000",
+          "localtime": "2026-02-08T14:00:00+0100"
+        },
+        "eventId": 1000,
+        "args": [
+          "0",
+          "1"
+        ],
+        "source": "system",
+        "uuid": "8FE8BFD56EA3AE8C1CC0658EB0060CA9"
+      },
+      {
+        "datetime": {
+          "timezone": "",
+          "utc": "2026-02-08T09:30:00+0000",
+          "localtime": "2026-02-08T10:30:00+0100"
+        },
+        "eventId": 1000,
+        "args": [
+          "1",
+          "0"
+        ],
+        "source": "system",
+        "uuid": "48DBEB4A483CC4B274288E51D3A5BA68"
+      },
+      {
+        "datetime": {
+          "timezone": "",
+          "utc": "2026-02-08T09:12:29+0000",
+          "localtime": "2026-02-08T10:12:29+0100"
+        },
+        "eventId": 1200,
+        "args": [
+          "0",
+          "-6"
+        ],
+        "source": "system",
+        "uuid": "DA60F67C89DC9C66D891D592E50F6850"
+      },
+      {
+        "datetime": {
+          "timezone": "",
+          "utc": "2026-02-08T09:12:29+0000",
+          "localtime": "2026-02-08T10:12:29+0100"
+        },
+        "eventId": 1000,
+        "args": [
+          "0",
+          "1"
+        ],
+        "source": "system",
+        "uuid": "83BF0498F0B5CDBD656DB81E89FE4D4B"
+      },
+      {
+        "datetime": {
+          "timezone": "",
+          "utc": "2026-02-08T09:12:28+0000",
+          "localtime": "2026-02-08T10:12:28+0100"
+        },
+        "eventId": 2000,
+        "args": [
+          "0",
+          "-1"
+        ],
+        "source": "system",
+        "uuid": "FD5528B621AA9208EC994B53F6844FD2"
+      },
+      {
+        "datetime": {
+          "timezone": "",
+          "utc": "2026-02-08T09:12:28+0000",
+          "localtime": "2026-02-08T10:12:28+0100"
+        },
+        "eventId": 1800,
+        "args": [
+          "0",
+          "-1"
+        ],
+        "source": "system",
+        "uuid": "F1C74A08B9BBBDAEE4CB997E4C7CCECF"
+      },
+      {
+        "datetime": {
+          "timezone": "",
+          "utc": "2026-02-08T09:12:28+0000",
+          "localtime": "2026-02-08T10:12:28+0100"
+        },
+        "eventId": 1710,
+        "args": [
+          "0",
+          "1"
+        ],
+        "source": "system",
+        "uuid": "4F0EC5FE8B6EDD3953AEECD645257DF9"
+      }
+    ],
+    "application": {
+      "data": "{\"bag\":{\"commands\":{\"commands\":[],\"last\":0},\"returns\":{\"last\":0,\"properties\":\"\",\"toUpdate\":false},\"user\":{\"email\":\"adrien.lefaure@gmail.com\",\"marketing\":{\"magiline\":false,\"newsletter\":false,\"partners\":false},\"properties\":\"H4sIAAAAAAAAAz3PywrCQAwF0F8p2VrwUTp97KTUlQvxD0InbQemmTIPwYr/7oyCy5xwuckLBvVQWvkntMccNDrPuBC0cKURgyXIYVT2r2dpFXHEdTacYFcUQoiyqauqjIxSWnIuLpqsm2lRnMmQdcioU8g4j7ozMiVFUZ0OEYdvOfTMtKFPYAJ7m+xyh3QTTwGnFBltnL1aaPuV98GalfY3tMql4BTiF/X7A7VDuYbVAAAA\",\"toUpdate\":true}},\"cameras\":{\"camera\":{\"authentication\":1,\"ipDetection\":false},\"camera2\":{\"authentication\":1,\"ipDetection\":false,\"password\":\"\",\"user\":\"\"},\"camera3\":{\"authentication\":1,\"ipDetection\":false,\"password\":\"\",\"user\":\"\"},\"camera4\":{\"authentication\":1,\"ipDetection\":false,\"password\":\"\",\"user\":\"\"}},\"confirmNoSecurityDate\":null,\"equipments\":{\"has_heater\":null,\"robot_type\":null,\"security_type\":null,\"treatment_type\":null},\"hideWintering\":false,\"installedAt\":null,\"ip\":\"127.0.0.1\",\"localisation\":\"45.89430794153472,3.231142533783131,318.75,5.00\",\"measures\":\"H4sIAAAAAAAAA4uOBQApu0wNAgAAAA==\",\"outlet\":{\"address\":\"Espace Mozac -  Route de Volvic\",\"city\":\"RIOM-MALAUZAT\",\"code\":\"DR00081_9\",\"country\":{\"code\":\"FR\",\"id\":1,\"name\":\"France\"},\"email\":\"contact@olympid-piscines.fr\",\"facebook\":null,\"id\":9,\"instagram\":null,\"latitude\":\"45.886663\",\"longitude\":\"3.066344\",\"name\":\"Olympid Piscines\",\"phone_number\":\"04 73 63 15 18\",\"postcode\":\"63200\",\"schedule\":null,\"website\":\"https://www.piscines-magiline.fr/pisciniste-constructeur-points-vente/fr/auvergne/puy-de-dome/distributeur-piscines-magiline-riom.html\"},\"pool\":{\"length\":\"5,66\",\"width\":\"5\"},\"spotlight\":{\"brightness\":15,\"color\":1},\"waterXTankSize\":null}"
+    }
+  },
+  "software_update": null
+}
