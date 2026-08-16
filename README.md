@@ -27,7 +27,7 @@ Les commandes ci-dessous utilisent l’API locale du coffret et sont affichées 
 
 - **Éclairage** : entité `light` pour allumer ou éteindre les spots.
 - **Filtration** : choix du mode et du programme, interrupteurs *Filtration baignade* et *Pause filtration*, ainsi que réglage de la durée de pause par défaut.
-- **Planning expert** : toutes les 10 minutes, le programme `progServer` lu sur le coffret est recopié à l’identique dans `prog_user`, même s’il est vide. Le programme de filtration actuellement actif n’est pas changé. Si `progServer` n’est pas fourni par le coffret, aucune commande n’est envoyée.
+- **Planning expert adaptatif** : l’intégration calcule le besoin quotidien en heures équivalentes de filtration (EFH), génère un planning à partir de trois profils hydrauliques et le publie dans `prog_user`. Une nouvelle écriture n’est envoyée que lorsque le planning change. Le programme de filtration actuellement actif n’est pas changé automatiquement.
 - **Chauffage** : une entité thermostat regroupe la température actuelle, la consigne, les modes Arrêt/Chauffage/Auto, les préréglages Éco/Confort/Boost/Planning et la priorité chauffage. Les anciennes entités de réglage restent disponibles pour compatibilité.
 - **Traitement** : choix du mode pH, chlore ou électrolyseur ; les consignes pH, Redox/chlore et électrolyseur sont présentes mais désactivées par défaut dans le registre d’entités, car elles modifient le traitement de l’eau.
 
@@ -98,6 +98,29 @@ rest_command: !include rest_commands_imagix.yaml
 
 Après un redémarrage de Home Assistant, exécutez l’action `rest_command.imagix_test_expert_program` depuis **Outils de développement → Actions**. Adaptez l’adresse IP au début du fichier si nécessaire.
 
+### Filtration adaptative
+
+La filtration adaptative est activée par défaut. Elle utilise les profils
+physiques suivants :
+
+| Profil | Mode contrôleur | Régime initial | Débit initial |
+|---|---:|---:|---:|
+| Éco | `4` | 1 800 tr/min | 14 m³/h |
+| Moyen | `3` | 2 200 tr/min | 21 m³/h |
+| Boost | `1` | 2 850 tr/min | 30 m³/h |
+
+Le libellé « débit optimisé » reste un segment au profil Moyen et envoie donc
+le mode `3`. Le mode natif `7` du coffret n’est pas utilisé par le moteur.
+
+Les réglages sont disponibles depuis **Paramètres → Appareils et services →
+iMagi-x → Configurer**. Ils permettent notamment de désactiver le moteur, de
+choisir la stratégie Éco/Équilibrée/Qualité et d’ajuster les débits, RPM,
+bornes EFH et durées minimales.
+
+Le moteur publie le planning dans `prog_user`, mais ne sélectionne pas
+automatiquement le programme expert. Cette activation reste manuelle tant que
+la valeur `actualProg` correspondante n’a pas été confirmée sur le coffret.
+
 ## Développement
 
 ### Structure du projet
@@ -105,11 +128,13 @@ Après un redémarrage de Home Assistant, exécutez l’action `rest_command.ima
 ```
 custom_components/imagix/
 ├── __init__.py          # Point d'entrée de l'intégration
+├── adaptive_filtration/ # Moteur EFH, planification et entités dédiées
 ├── api.py              # Client API pour communiquer avec iMagi-x
+├── button.py           # Recalcul manuel du planning adaptatif
 ├── climate.py           # Thermostat de la pompe à chaleur
 ├── config_flow.py      # Interface de configuration
 ├── const.py            # Constantes
-├── coordinator.py      # Coordinateur de mise à jour des données
+├── coordinator.py      # Lecture périodique du coffret uniquement
 ├── entity.py           # Base commune des entités
 ├── light.py            # Éclairage de la piscine
 ├── manifest.json       # Métadonnées de l'intégration

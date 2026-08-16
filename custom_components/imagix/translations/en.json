@@ -1,0 +1,43 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configure iMagi-x",
+        "description": "Enter the IP address of your iMagi-x controller",
+        "data": {"ip_address": "IP address"},
+        "data_description": {
+          "ip_address": "The controller IP address, for example 192.168.1.40"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Unable to connect to the iMagi-x controller.",
+      "unknown": "Unknown error"
+    },
+    "abort": {"already_configured": "This controller is already configured"}
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Adaptive filtration",
+        "description": "Configure EFH calculation and the expert schedule published to the controller.",
+        "data": {
+          "adaptive_filtration_enabled": "Enable adaptive filtration",
+          "adaptive_filtration_strategy": "Strategy",
+          "adaptive_reference_volume_m3": "Reference volume (m³)",
+          "adaptive_low_flow_m3h": "Eco flow (m³/h)",
+          "adaptive_medium_flow_m3h": "Medium flow (m³/h)",
+          "adaptive_high_flow_m3h": "Boost flow (m³/h)",
+          "adaptive_low_rpm": "Eco speed (RPM)",
+          "adaptive_medium_rpm": "Medium speed (RPM)",
+          "adaptive_high_rpm": "Boost speed (RPM)",
+          "adaptive_min_efh": "Minimum daily EFH",
+          "adaptive_max_efh": "Maximum daily EFH",
+          "adaptive_minimum_run_minutes": "Minimum segment duration (minutes)",
+          "adaptive_solar_share_target": "Solar filtration share (0 to 1)",
+          "adaptive_debt_carry_limit_efh": "Maximum carried debt (EFH)"
+        }
+      }
+    }
+  }
+}

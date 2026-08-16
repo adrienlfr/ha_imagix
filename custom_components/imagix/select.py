@@ -10,6 +10,8 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
+from .adaptive_filtration.bootstrap import get_adaptive_filtration_manager
+from .adaptive_filtration.entities.select import AdaptiveFiltrationStrategySelect
 from .const import DOMAIN
 from .coordinator import ImagixDataUpdateCoordinator
 from .entity import ImagixEntity
@@ -143,6 +145,10 @@ async def async_setup_entry(
         for description in descriptions
         if _is_available(coordinator.data, description.presence_path)
     ]
+    manager = get_adaptive_filtration_manager(hass, config_entry.entry_id)
+    entities.append(
+        AdaptiveFiltrationStrategySelect(manager, config_entry.entry_id)
+    )
     async_add_entities(entities)
 
 

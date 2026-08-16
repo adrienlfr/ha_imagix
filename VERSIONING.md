@@ -14,8 +14,8 @@ La version de `custom_components/imagix/manifest.json` doit être strictement
 identique au tag Git, sans le préfixe `v` :
 
 ```text
-manifest.json : 0.5.0
-tag Git       : v0.5.0
+manifest.json : 0.8.0
+tag Git       : v0.8.0
 ```
 
 ## Préparer une release
@@ -27,22 +27,22 @@ tag Git       : v0.5.0
 4. Contrôler la cohérence :
 
    ```bash
-   python3 scripts/check_version.py v0.5.0
+   python3 scripts/check_version.py v0.8.0
    ```
 
 5. Valider les changements dans Git :
 
    ```bash
    git add CHANGELOG.md custom_components/imagix/manifest.json
-   git commit -m "Release 0.5.0"
+   git commit -m "Release 0.8.0"
    ```
 
 6. Créer et pousser le tag :
 
    ```bash
-   git tag -a v0.5.0 -m "iMagi-x 0.5.0"
+   git tag -a v0.8.0 -m "iMagi-x 0.8.0"
    git push origin main
-   git push origin v0.5.0
+   git push origin v0.8.0
    ```
 
 Le workflow `release.yml` vérifie la correspondance des versions puis crée la
@@ -67,4 +67,3 @@ GitHub Release. HACS utilise cette release pour proposer la mise à jour.
 
 Ne jamais déplacer ou remplacer un tag déjà publié. Une correction d'une
 release doit toujours recevoir un nouveau numéro de version.
-

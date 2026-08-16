@@ -1,5 +1,4 @@
 {
   "name": "iMagi-x",
-  "render_readme": true,
-  "domains": ["sensor"]
+  "render_readme": true
 }

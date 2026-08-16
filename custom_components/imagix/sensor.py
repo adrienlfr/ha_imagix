@@ -25,6 +25,8 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.util import dt as dt_util
 
+from .adaptive_filtration.bootstrap import get_adaptive_filtration_manager
+from .adaptive_filtration.entities.sensor import create_adaptive_sensors
 from .const import DOMAIN
 from .coordinator import ImagixDataUpdateCoordinator
 
@@ -283,10 +285,13 @@ async def async_setup_entry(
     """Set up the sensor platform."""
     coordinator: ImagixDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
     
-    async_add_entities(
+    entities = [
         ImagixSensor(coordinator, description, config_entry.entry_id)
         for description in SENSORS
-    )
+    ]
+    manager = get_adaptive_filtration_manager(hass, config_entry.entry_id)
+    entities.extend(create_adaptive_sensors(manager, config_entry.entry_id))
+    async_add_entities(entities)
 
 
 class ImagixSensor(CoordinatorEntity[ImagixDataUpdateCoordinator], SensorEntity):

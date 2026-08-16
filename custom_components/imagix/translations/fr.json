@@ -4,21 +4,17 @@
       "user": {
         "title": "Configurer iMagi-x",
         "description": "Entrez l'adresse IP de votre contrôleur iMagi-x",
-        "data": {
-          "ip_address": "Adresse IP"
-        },
+        "data": {"ip_address": "Adresse IP"},
         "data_description": {
-          "ip_address": "L'adresse IP de votre contrôleur de piscine iMagi-x (ex: 192.168.1.40)"
+          "ip_address": "L'adresse IP du contrôleur, par exemple 192.168.1.40"
         }
       }
     },
     "error": {
-      "cannot_connect": "Impossible de se connecter au contrôleur iMagi-x. Vérifiez l'adresse IP.",
+      "cannot_connect": "Impossible de se connecter au contrôleur iMagi-x.",
       "unknown": "Erreur inconnue"
     },
-    "abort": {
-      "already_configured": "Ce contrôleur est déjà configuré"
-    }
+    "abort": {"already_configured": "Ce contrôleur est déjà configuré"}
   },
   "options": {
     "step": {
