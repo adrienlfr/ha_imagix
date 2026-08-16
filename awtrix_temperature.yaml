@@ -1,0 +1,205 @@
+blueprint:
+  name: AWTRIX Temperature Monitor
+  description: >
+    This blueprint sends the current temperature from a sensor to one or more
+    AWTRIX 3 devices via MQTT.
+  domain: automation
+  input:
+    awtrix:
+      name: AWTRIX Device
+      description: Select one or more AWTRIX light devices.
+      selector:
+        device:
+          filter:
+            integration: mqtt
+            manufacturer: Blueforcer
+            model: AWTRIX 3
+          multiple: true
+    temperature_source:
+      name: Temperature Sensor
+      description: Sensor providing the current temperature.
+      selector:
+        entity:
+          filter:
+            domain: sensor
+          multiple: false
+    icon_low_id:
+      name: Icon ID (Low)
+      description: AWTRIX icon ID shown when temperature is below low threshold.
+      default: 1736
+      selector:
+        number:
+          min: 0
+          max: 99999
+          mode: box
+          step: 1
+    icon_ok_id:
+      name: Icon ID (OK)
+      description: AWTRIX icon ID shown when temperature is in the normal range.
+      default: 2411
+      selector:
+        number:
+          min: 0
+          max: 99999
+          mode: box
+          step: 1
+    icon_high_id:
+      name: Icon ID (High)
+      description: AWTRIX icon ID shown when temperature is above high threshold.
+      default: 1737
+      selector:
+        number:
+          min: 0
+          max: 99999
+          mode: box
+          step: 1
+    low_icon_threshold:
+      name: Low icon threshold
+      description: Temperature below this value uses the low icon.
+      default: 18
+      selector:
+        number:
+          min: -100
+          max: 200
+          mode: box
+          step: 0.1
+    high_icon_threshold:
+      name: High icon threshold
+      description: Temperature above this value uses the high icon.
+      default: 26
+      selector:
+        number:
+          min: -100
+          max: 200
+          mode: box
+          step: 0.1
+    use_min_threshold:
+      name: Enable minimum temperature
+      description: >
+        If enabled, temperature is only shown when it is greater than or equal to
+        the minimum value.
+      default: false
+      selector:
+        boolean: {}
+    min_temperature:
+      name: Minimum temperature
+      description: Minimum temperature allowed for display.
+      default: -10
+      selector:
+        number:
+          min: -100
+          max: 200
+          mode: box
+          step: 0.1
+    use_max_threshold:
+      name: Enable maximum temperature
+      description: >
+        If enabled, temperature is only shown when it is less than or equal to
+        the maximum value.
+      default: false
+      selector:
+        boolean: {}
+    max_temperature:
+      name: Maximum temperature
+      description: Maximum temperature allowed for display.
+      default: 50
+      selector:
+        number:
+          min: -100
+          max: 200
+          mode: box
+          step: 0.1
+
+mode: single
+
+variables:
+  device_ids: !input awtrix
+  devices_topics: >
+    {%- macro get_device_topic(device_id) -%}
+      {{ states((device_entities(device_id) | select('search','device_topic') | list)[0]) }}
+    {%- endmacro -%}
+    {%- set ns = namespace(devices=[]) -%}
+    {%- for device_id in device_ids -%}
+      {%- set device = get_device_topic(device_id) | replace(' ', '') -%}
+      {% set ns.devices = ns.devices + [device ~ '/custom/temperature'] %}
+    {%- endfor -%}
+    {{ ns.devices }}
+
+  temperature_sensor: !input temperature_source
+  icon_low_id: !input icon_low_id
+  icon_ok_id: !input icon_ok_id
+  icon_high_id: !input icon_high_id
+  low_icon_threshold: !input low_icon_threshold
+  high_icon_threshold: !input high_icon_threshold
+  use_min_threshold: !input use_min_threshold
+  min_temperature: !input min_temperature
+  use_max_threshold: !input use_max_threshold
+  max_temperature: !input max_temperature
+
+  temperature_raw: "{{ states(temperature_sensor) }}"
+  is_temperature_valid: >
+    {{ temperature_raw not in ['unknown', 'unavailable', 'none', 'None', ''] }}
+  temperature_numeric: "{{ temperature_raw | float(default=0) }}"
+  selected_icon_id: >
+    {% if temperature_numeric < (low_icon_threshold | float(0)) %}
+      {{ icon_low_id }}
+    {% elif temperature_numeric > (high_icon_threshold | float(0)) %}
+      {{ icon_high_id }}
+    {% else %}
+      {{ icon_ok_id }}
+    {% endif %}
+  passes_min_threshold: >
+    {{ (not use_min_threshold) or (temperature_numeric >= (min_temperature | float(0))) }}
+  passes_max_threshold: >
+    {{ (not use_max_threshold) or (temperature_numeric <= (max_temperature | float(0))) }}
+  should_publish: >
+    {{ is_temperature_valid and passes_min_threshold and passes_max_threshold }}
+  temperature_unit: >
+    {% set unit = state_attr(temperature_sensor, 'unit_of_measurement') %}
+    {{ unit if unit else '°C' }}
+  temperature_text: >
+    {% if is_temperature_valid %}
+      {{ temperature_numeric | round(1) }}{{ temperature_unit }}
+    {% else %}
+      --
+    {% endif %}
+  payload: >
+    {"icon":"{{ selected_icon_id | trim }}","text":"{{ temperature_text | trim }}"}
+
+trigger:
+  - platform: time_pattern
+    minutes: /1
+
+condition: []
+
+action:
+  - choose:
+      - alias: Publish temperature when in range
+        conditions:
+          - condition: template
+            value_template: "{{ should_publish }}"
+        sequence:
+          - repeat:
+              for_each: "{{ devices_topics }}"
+              sequence:
+                - service: mqtt.publish
+                  data:
+                    qos: 0
+                    retain: false
+                    topic: "{{ repeat.item }}"
+                    payload: "{{ payload }}"
+
+      - alias: Clear app when condition is not met
+        conditions:
+          - condition: template
+            value_template: "{{ not should_publish }}"
+        sequence:
+          - repeat:
+              for_each: "{{ devices_topics }}"
+              sequence:
+                - service: mqtt.publish
+                  data:
+                    qos: 0
+                    retain: false
+                    topic: "{{ repeat.item }}"
+                    payload: "{}"

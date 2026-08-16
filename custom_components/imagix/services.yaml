@@ -1,0 +1,27 @@
+set_heating_priority_schedule:
+  name: Configurer les plages de priorité chauffage
+  description: >-
+    Active la priorité chauffage et définit les créneaux quotidiens pendant
+    lesquels la pompe à chaleur peut demander le démarrage de la filtration.
+    Les créneaux peuvent se chevaucher ou passer minuit.
+  fields:
+    config_entry_id:
+      name: Identifiant de configuration
+      description: Obligatoire seulement si plusieurs coffrets iMagi-x sont configurés.
+      required: false
+      selector:
+        text:
+    schedule:
+      name: Créneaux quotidiens
+      description: >-
+        Liste des créneaux, avec start et end au format HH:MM. Exemple :
+        - start: "08:00"; end: "12:00"
+        - start: "14:00"; end: "20:00"
+      required: true
+      example:
+        - start: "08:00"
+          end: "12:00"
+        - start: "14:00"
+          end: "20:00"
+      selector:
+        object:

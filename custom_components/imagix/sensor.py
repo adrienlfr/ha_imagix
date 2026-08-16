@@ -15,12 +15,15 @@ from homeassistant.components.sensor import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     PERCENTAGE,
+    UnitOfEnergy,
+    UnitOfPower,
     UnitOfTemperature,
     UnitOfVolume,
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.util import dt as dt_util
 
 from .const import DOMAIN
 from .coordinator import ImagixDataUpdateCoordinator
@@ -72,6 +75,58 @@ SENSORS: tuple[ImagixSensorEntityDescription, ...] = (
         value_fn=lambda data: data.get("state", {}).get("metrics", {}).get("orp"),
     ),
     ImagixSensorEntityDescription(
+        key="water_temperature_flow",
+        translation_key="water_temperature_flow",
+        name="Température d'eau en circulation",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        value_fn=lambda data: data.get("state", {})
+        .get("metrics", {})
+        .get("waterTemperatureFlow"),
+    ),
+    ImagixSensorEntityDescription(
+        key="ph_flow",
+        translation_key="ph_flow",
+        name="pH en circulation",
+        state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:ph",
+        value_fn=lambda data: data.get("state", {}).get("metrics", {}).get("phFlow"),
+    ),
+    ImagixSensorEntityDescription(
+        key="orp_flow",
+        translation_key="orp_flow",
+        name="ORP en circulation",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement="mV",
+        icon="mdi:water-check",
+        value_fn=lambda data: data.get("state", {}).get("metrics", {}).get("orpFlow"),
+    ),
+    ImagixSensorEntityDescription(
+        key="water_temperature_flow_date",
+        translation_key="water_temperature_flow_date",
+        name="Dernière mesure d'eau en circulation",
+        device_class=SensorDeviceClass.TIMESTAMP,
+        icon="mdi:clock-outline",
+        value_fn=lambda data: _get_metric_timestamp(data, "waterTemperatureFlowDate"),
+    ),
+    ImagixSensorEntityDescription(
+        key="ph_flow_date",
+        translation_key="ph_flow_date",
+        name="Dernière mesure pH en circulation",
+        device_class=SensorDeviceClass.TIMESTAMP,
+        icon="mdi:clock-outline",
+        value_fn=lambda data: _get_metric_timestamp(data, "phFlowDate"),
+    ),
+    ImagixSensorEntityDescription(
+        key="orp_flow_date",
+        translation_key="orp_flow_date",
+        name="Dernière mesure ORP en circulation",
+        device_class=SensorDeviceClass.TIMESTAMP,
+        icon="mdi:clock-outline",
+        value_fn=lambda data: _get_metric_timestamp(data, "orpFlowDate"),
+    ),
+    ImagixSensorEntityDescription(
         key="filtration_state",
         translation_key="filtration_state",
         name="État de la filtration",
@@ -85,7 +140,7 @@ SENSORS: tuple[ImagixSensorEntityDescription, ...] = (
         translation_key="filtration_mode",
         name="Mode de filtration",
         device_class=SensorDeviceClass.ENUM,
-        options=["manuel", "auto", "nage", "pause", "hivernal"],
+        options=["automatique", "marche forcée", "arrêt manuel"],
         icon="mdi:tune",
         value_fn=lambda data: _get_filtration_mode(data),
     ),
@@ -94,7 +149,6 @@ SENSORS: tuple[ImagixSensorEntityDescription, ...] = (
         translation_key="pool_volume",
         name="Volume du bassin",
         device_class=SensorDeviceClass.VOLUME,
-        state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=UnitOfVolume.CUBIC_METERS,
         icon="mdi:pool",
         value_fn=lambda data: data.get("state", {}).get("pool", {}).get("informations", {}).get("volume"),
@@ -109,6 +163,30 @@ SENSORS: tuple[ImagixSensorEntityDescription, ...] = (
         value_fn=lambda data: data.get("state", {}).get("metrics", {}).get("filterClogging"),
     ),
     ImagixSensorEntityDescription(
+        key="free_chlorine",
+        translation_key="free_chlorine",
+        name="Chlore libre",
+        state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:water-check",
+        value_fn=lambda data: data.get("state", {}).get("metrics", {}).get("freeChlorine"),
+    ),
+    ImagixSensorEntityDescription(
+        key="salinity",
+        translation_key="salinity",
+        name="Salinité",
+        state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:water-percent",
+        value_fn=lambda data: data.get("state", {}).get("metrics", {}).get("salinity"),
+    ),
+    ImagixSensorEntityDescription(
+        key="water_hardness",
+        translation_key="water_hardness",
+        name="Dureté de l'eau",
+        state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:water-opacity",
+        value_fn=lambda data: data.get("state", {}).get("metrics", {}).get("waterHardness"),
+    ),
+    ImagixSensorEntityDescription(
         key="pump_rpm",
         translation_key="pump_rpm",
         name="Vitesse de la pompe",
@@ -116,6 +194,26 @@ SENSORS: tuple[ImagixSensorEntityDescription, ...] = (
         native_unit_of_measurement="rpm",
         icon="mdi:pump",
         value_fn=lambda data: data.get("state", {}).get("pool", {}).get("pumps", {}).get("pumpFx1", {}).get("rpm"),
+    ),
+    ImagixSensorEntityDescription(
+        key="pump_power",
+        translation_key="pump_power",
+        name="Puissance de la pompe",
+        device_class=SensorDeviceClass.POWER,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfPower.WATT,
+        icon="mdi:lightning-bolt",
+        value_fn=lambda data: _get_pump_power(data),
+    ),
+    ImagixSensorEntityDescription(
+        key="pump_energy_total",
+        translation_key="pump_energy_total",
+        name="Consommation totale de la pompe",
+        device_class=SensorDeviceClass.ENERGY,
+        state_class=SensorStateClass.TOTAL_INCREASING,
+        native_unit_of_measurement=UnitOfEnergy.WATT_HOUR,
+        icon="mdi:counter",
+        value_fn=lambda data: _get_pump_power_total(data),
     ),
     ImagixSensorEntityDescription(
         key="system_uptime",
@@ -142,17 +240,39 @@ def _get_filtration_state(data: dict[str, Any]) -> str:
     return state_map.get(state, "inconnu")
 
 
+def _get_metric_timestamp(data: dict[str, Any], key: str):
+    """Return a valid metric timestamp or None for the controller sentinel."""
+    value = data.get("state", {}).get("metrics", {}).get(key)
+    if not value or value.startswith("1970-01-01"):
+        return None
+    return dt_util.parse_datetime(value)
+
+
 def _get_filtration_mode(data: dict[str, Any]) -> str:
     """Get filtration mode as a readable string."""
     mode = data.get("state", {}).get("filtration", {}).get("mode", 0)
     mode_map = {
-        0: "manuel",
-        1: "auto",
-        2: "nage",
-        3: "pause",
-        4: "hivernal",
+        0: "automatique",
+        1: "marche forcée",
+        2: "arrêt manuel",
     }
     return mode_map.get(mode, "inconnu")
+
+
+def _get_pump_power(data: dict[str, Any]) -> int | None:
+    """Get pump power from pumps array."""
+    pumps = data.get("state", {}).get("cards", {}).get("pumps", [])
+    if pumps and len(pumps) > 0:
+        return pumps[0].get("power")
+    return None
+
+
+def _get_pump_power_total(data: dict[str, Any]) -> int | None:
+    """Get total pump energy consumption from pumps array."""
+    pumps = data.get("state", {}).get("cards", {}).get("pumps", [])
+    if pumps and len(pumps) > 0:
+        return pumps[0].get("powerTotal")
+    return None
 
 
 async def async_setup_entry(

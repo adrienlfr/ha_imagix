@@ -1,0 +1,46 @@
+# À inclure dans configuration.yaml :
+# rest_command: !include rest_commands_imagix.yaml
+#
+# Change l'adresse IP si le coffret n'est plus accessible sur 192.168.1.40.
+
+# Test : remplace prog_user par un planning arrêté à minuit, à vitesse moyenne
+# de 08:00 à 20:00, puis arrêté. Cette commande ne sélectionne pas le programme
+# expert et ne modifie donc pas immédiatement la filtration en cours.
+imagix_test_expert_program:
+  url: "http://192.168.1.40:11000/api/v1/pool/local/configure-filtration"
+  method: POST
+  headers:
+    Content-Type: application/json
+  payload: >-
+    {"prog_user":{"prog":[{"temperatureMax":99,"steps":[{"minute":0,"mode":0},{"minute":480,"mode":3},{"minute":1200,"mode":0}]}]}}
+
+# Version générique : appeler le service avec un champ program contenant la
+# liste des bandes de température et créneaux à enregistrer.
+imagix_set_expert_program:
+  url: "http://192.168.1.40:11000/api/v1/pool/local/configure-filtration"
+  method: POST
+  headers:
+    Content-Type: application/json
+  payload: >-
+    {"prog_user":{"prog":{{ program | to_json }}}}
+
+# Déclare un volet MAGIguard X Bluetooth auprès du coffret. Lance cette commande
+# avec le champ ble_code (les 4 chiffres fournis avec le volet). Elle active la
+# fonctionnalité dans la configuration ; elle ne déplace pas le volet.
+imagix_enable_roller:
+  url: "http://192.168.1.40:11000/api/v1/pool/local/pool-installation"
+  method: POST
+  headers:
+    Content-Type: application/json
+  payload: >-
+    {"roller":{"presence":true,"type":2,"brand":"magiguardx","ble_code":{{ ble_code | to_json }}}}
+
+# Retire le volet de la configuration du coffret. Cette commande ne déplace pas
+# le volet ; elle masque seulement la fonctionnalité déclarée.
+imagix_disable_roller:
+  url: "http://192.168.1.40:11000/api/v1/pool/local/pool-installation"
+  method: POST
+  headers:
+    Content-Type: application/json
+  payload: >-
+    {"roller":{"presence":false,"type":2,"brand":"magiguardx","ble_code":""}}
