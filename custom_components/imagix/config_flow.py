@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+import re
 from typing import Any
 
 import voluptuous as vol
@@ -44,6 +45,7 @@ from .api import ImagixApiClient, ImagixConnectionError
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
+_TIME_PATTERN = re.compile(r"^(?:[01]\d|2[0-3]):[0-5]\d$")
 
 STEP_USER_DATA_SCHEMA = vol.Schema(
     {
@@ -111,12 +113,16 @@ class ImagixOptionsFlow(config_entries.OptionsFlow):
         user_input: dict[str, Any] | None = None,
     ) -> FlowResult:
         """Show and save adaptive filtration settings."""
+        errors: dict[str, str] = {}
         if user_input is not None:
-            return self.async_create_entry(title="", data=user_input)
+            for key in (CONF_OFF_PEAK_START, CONF_OFF_PEAK_END):
+                if _TIME_PATTERN.fullmatch(str(user_input.get(key, ""))) is None:
+                    errors[key] = "invalid_time"
+            if not errors:
+                return self.async_create_entry(title="", data=user_input)
 
         defaults = AdaptiveFiltrationConfig()
-        options = self.config_entry.options
-        time_validator = vol.Match(r"^(?:[01]\d|2[0-3]):[0-5]\d$")
+        options = user_input if user_input is not None else self.config_entry.options
 
         def format_minute(minute: int) -> str:
             return f"{minute // 60:02d}:{minute % 60:02d}"
@@ -197,14 +203,14 @@ class ImagixOptionsFlow(config_entries.OptionsFlow):
                         CONF_OFF_PEAK_START,
                         format_minute(defaults.off_peak_start_minute),
                     ),
-                ): time_validator,
+                ): cv.string,
                 vol.Optional(
                     CONF_OFF_PEAK_END,
                     default=options.get(
                         CONF_OFF_PEAK_END,
                         format_minute(defaults.off_peak_end_minute),
                     ),
-                ): time_validator,
+                ): cv.string,
                 vol.Optional(
                     CONF_OFF_PEAK_PRICE,
                     default=options.get(
@@ -240,4 +246,8 @@ class ImagixOptionsFlow(config_entries.OptionsFlow):
                 ): vol.All(vol.Coerce(int), vol.Range(min=0, max=120)),
             }
         )
-        return self.async_show_form(step_id="init", data_schema=schema)
+        return self.async_show_form(
+            step_id="init",
+            data_schema=schema,
+            errors=errors,
+        )

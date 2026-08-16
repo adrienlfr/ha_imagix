@@ -17,6 +17,9 @@
     "abort": {"already_configured": "This controller is already configured"}
   },
   "options": {
+    "error": {
+      "invalid_time": "Time must use the HH:MM format, for example 22:00."
+    },
     "step": {
       "init": {
         "title": "Adaptive filtration",

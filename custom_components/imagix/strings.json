@@ -21,6 +21,9 @@
     }
   },
   "options": {
+    "error": {
+      "invalid_time": "L'heure doit utiliser le format HH:MM, par exemple 22:00."
+    },
     "step": {
       "init": {
         "title": "Filtration adaptative",
