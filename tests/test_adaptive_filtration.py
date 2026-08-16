@@ -150,7 +150,7 @@ class ProfileTests(unittest.TestCase):
         medium = resolve_label(ModeLabel.MEDIUM, config)
         optimized = resolve_label(ModeLabel.OPTIMIZED_FLOW, config)
         self.assertEqual(medium, optimized)
-        self.assertEqual(medium.controller_mode, 3)
+        self.assertEqual(medium.controller_mode, 7)
         self.assertEqual(medium.rpm, 2200)
 
     def test_efh_rates(self) -> None:
@@ -215,6 +215,7 @@ class SchedulerTests(unittest.TestCase):
         program = serialize_plan(plan, config)
         modes = {step["mode"] for step in program[0]["steps"]}
         self.assertIn(1, modes)
+        self.assertIn(7, modes)
         self.assertIn(0, modes)
 
     def test_cost_optimized_plan_uses_multiple_profiles(self) -> None:
@@ -230,7 +231,7 @@ class SchedulerTests(unittest.TestCase):
             for step in serialize_plan(plan, config)[0]["steps"]
         }
         self.assertIn(1, modes)
-        self.assertTrue({3, 4} & modes)
+        self.assertTrue({7, 4} & modes)
 
     def test_daily_boost_is_split_into_four_weather_placed_quarters(self) -> None:
         config = AdaptiveFiltrationConfig(strategy=Strategy.BALANCED)

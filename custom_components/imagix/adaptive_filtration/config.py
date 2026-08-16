@@ -80,7 +80,7 @@ class AdaptiveFiltrationConfig:
                 HydraulicProfile.MEDIUM,
                 self.medium_rpm,
                 self.medium_flow_m3h,
-                3,
+                7,
             ),
             HydraulicProfile.HIGH: ProfileSpec(
                 HydraulicProfile.HIGH,

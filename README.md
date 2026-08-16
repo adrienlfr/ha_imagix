@@ -106,11 +106,12 @@ physiques suivants :
 | Profil | Mode contrôleur | Régime initial | Débit initial |
 |---|---:|---:|---:|
 | Éco | `4` | 1 800 tr/min | 14 m³/h |
-| Moyen | `3` | 2 200 tr/min | 21 m³/h |
+| Optimisé | `7` | 2 200 tr/min* | 21 m³/h* |
 | Boost | `1` | 2 850 tr/min | 30 m³/h |
 
-Le libellé « débit optimisé » reste un segment au profil Moyen et envoie donc
-le mode `3`. Le mode natif `7` du coffret n’est pas utilisé par le moteur.
+Le profil intermédiaire envoie le mode natif optimisé `7` du coffret. Les
+valeurs de 2 200 tr/min et 21 m³/h restent les hypothèses de calcul EFH ; le
+coffret peut adapter la vitesse réelle pendant ce mode.
 
 Les réglages sont disponibles depuis **Paramètres → Appareils et services →
 iMagi-x → Configurer**. Ils permettent notamment de désactiver le moteur, de
@@ -130,7 +131,7 @@ L'heure quotidienne de Boost est découpée par défaut en quatre créneaux de
 15 minutes. Ils sont répartis dans le cœur chaud du planning et ne sont donc
 pas systématiquement placés au démarrage. La filtration forme néanmoins une
 plage continue : la pompe ne s'arrête pas entre les créneaux, seuls les modes
-`4` (Éco), `3` (Moyen) et `1` (Boost) changent. La stratégie Équilibrée donne
+`4` (Éco), `7` (Optimisé) et `1` (Boost) changent. La stratégie Équilibrée donne
 la majorité des EFH restantes au débit moyen afin de maintenir la giration et
 le traitement, puis utilise Éco pour le complément économique.
 

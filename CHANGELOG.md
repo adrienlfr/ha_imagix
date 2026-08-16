@@ -5,6 +5,13 @@ Toutes les modifications notables de ce projet sont documentées ici.
 Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 projet utilise [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [0.10.1] - 2026-08-17
+
+### Modifié
+
+- Le profil intermédiaire du planning adaptatif commande désormais le mode
+  optimisé `7` du coffret au lieu du mode moyen `3`.
+
 ## [0.10.0] - 2026-08-17
 
 ### Ajouté

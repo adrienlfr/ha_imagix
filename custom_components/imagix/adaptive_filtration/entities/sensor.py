@@ -89,7 +89,7 @@ DESCRIPTIONS = (
     ),
     AdaptiveSensorDescription(
         key="adaptive_filtration_delivered_medium_minutes",
-        name="Débit moyen délivré aujourd'hui",
+        name="Mode optimisé délivré aujourd'hui",
         icon="mdi:speedometer-medium",
         unit="min",
         state_class=SensorStateClass.MEASUREMENT,
