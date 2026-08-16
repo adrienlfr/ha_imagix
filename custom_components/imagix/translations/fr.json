@@ -39,6 +39,8 @@
         "adaptive_minimum_run_minutes": "Durée minimale d'un segment (minutes)",
         "adaptive_debt_carry_limit_efh": "Dette maximale reportée (EFH)",
         "adaptive_minimum_high_minutes": "Durée Boost minimale quotidienne (minutes)",
+        "adaptive_minimum_medium_minutes": "Durée minimale quotidienne à débit moyen (minutes)",
+        "adaptive_weather_entity_id": "Entité météo horaire (laisser vide pour automatique)",
         "adaptive_off_peak_start": "Début des heures creuses (HH:MM)",
         "adaptive_off_peak_end": "Fin des heures creuses (HH:MM)",
         "adaptive_off_peak_price": "Prix en heures creuses (€/kWh)",

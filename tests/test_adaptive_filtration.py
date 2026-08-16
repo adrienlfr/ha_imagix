@@ -21,6 +21,8 @@ from adaptive_filtration.models import (  # noqa: E402
     HydraulicProfile,
     ModeLabel,
     Strategy,
+    WeatherContext,
+    WeatherPoint,
 )
 from adaptive_filtration.profiles import delivered_efh, resolve_label  # noqa: E402
 from adaptive_filtration.scheduler import build_daily_plan  # noqa: E402
@@ -29,6 +31,7 @@ from adaptive_filtration.target import (  # noqa: E402
     calculate_target,
     interpolate_temperature_efh,
 )
+from adaptive_filtration.weather import normalize_forecast  # noqa: E402
 
 
 def inputs(
@@ -47,6 +50,33 @@ def inputs(
         pump_running=False,
         pump_rpm=0,
         confidence=DataConfidence.HIGH,
+    )
+
+
+def hot_afternoon_weather() -> WeatherContext:
+    """Build an hourly forecast whose warmest period is late afternoon."""
+    return WeatherContext(
+        entity_id="weather.home",
+        current_condition="sunny",
+        available=True,
+        points=tuple(
+            WeatherPoint(
+                at=datetime(2026, 8, 16, hour),
+                temperature_c=temperature,
+                cloud_coverage=10,
+                uv_index=max(0, 8 - abs(14 - hour)),
+                condition="sunny",
+            )
+            for hour, temperature in (
+                (8, 19),
+                (10, 22),
+                (12, 26),
+                (14, 29),
+                (16, 33),
+                (18, 30),
+                (20, 25),
+            )
+        ),
     )
 
 
@@ -90,6 +120,27 @@ class TargetTests(unittest.TestCase):
         result = calculate_target(normalized, AdaptiveFiltrationConfig())
         self.assertFalse(result.recovery_required)
 
+    def test_hot_weather_increases_target(self) -> None:
+        config = AdaptiveFiltrationConfig()
+        baseline = calculate_target(inputs(), config)
+        hot = calculate_target(inputs(), config, weather=hot_afternoon_weather())
+        self.assertGreater(hot.environment_factor, 1.0)
+        self.assertGreater(hot.required_efh, baseline.required_efh)
+        self.assertIn("forecast_heat", hot.reasons)
+
+    def test_observed_storm_adds_a_filtration_reserve(self) -> None:
+        config = AdaptiveFiltrationConfig()
+        weather = hot_afternoon_weather()
+        storm = WeatherContext(
+            entity_id=weather.entity_id,
+            current_condition="lightning-rainy",
+            points=weather.points,
+            available=True,
+        )
+        target = calculate_target(inputs(), config, weather=storm)
+        self.assertEqual(target.weather_bonus_efh, 0.6)
+        self.assertIn("observed_storm", target.reasons)
+
 
 class ProfileTests(unittest.TestCase):
     """Test the three-profile invariant."""
@@ -117,6 +168,27 @@ class ProfileTests(unittest.TestCase):
             delivered_efh(60, profiles[HydraulicProfile.HIGH], 21),
             30 / 21,
         )
+
+
+class WeatherTests(unittest.TestCase):
+    """Test Home Assistant weather forecast normalization."""
+
+    def test_forecast_units_are_normalized(self) -> None:
+        points = normalize_forecast(
+            [
+                {
+                    "datetime": "2026-08-16T16:00:00+02:00",
+                    "temperature": 86,
+                    "wind_speed": 10,
+                    "condition": "sunny",
+                }
+            ],
+            datetime(2026, 8, 16, 8),
+            {"temperature_unit": "°F", "wind_speed_unit": "mph"},
+        )
+        self.assertEqual(len(points), 1)
+        self.assertAlmostEqual(points[0].temperature_c or 0, 30)
+        self.assertAlmostEqual(points[0].wind_speed_kmh or 0, 16.09344)
 
 
 class SchedulerTests(unittest.TestCase):
@@ -159,6 +231,78 @@ class SchedulerTests(unittest.TestCase):
         }
         self.assertIn(1, modes)
         self.assertTrue({3, 4} & modes)
+
+    def test_daily_boost_is_split_into_four_weather_placed_quarters(self) -> None:
+        config = AdaptiveFiltrationConfig(strategy=Strategy.BALANCED)
+        weather = hot_afternoon_weather()
+        target = calculate_target(inputs(), config, weather=weather)
+        plan = build_daily_plan(
+            inputs(),
+            target,
+            config,
+            sunrise_minute=7 * 60,
+            sunset_minute=21 * 60,
+            weather=weather,
+        )
+        high = [
+            segment
+            for segment in plan.segments
+            if segment.profile is HydraulicProfile.HIGH
+        ]
+        self.assertEqual(len(high), 4)
+        self.assertTrue(all(segment.duration_minutes == 15 for segment in high))
+        self.assertNotEqual(plan.segments[0].profile, HydraulicProfile.HIGH)
+        self.assertTrue(
+            all(
+                left.end_minute < right.start_minute
+                for left, right in zip(high, high[1:])
+            )
+        )
+        steps = serialize_plan(plan, config)[0]["steps"]
+        off_minutes = [step["minute"] for step in steps if step["mode"] == 0]
+        self.assertEqual(off_minutes, [0, plan.segments[-1].end_minute])
+
+    def test_balanced_strategy_uses_medium_for_most_flexible_efh(self) -> None:
+        config = AdaptiveFiltrationConfig(strategy=Strategy.BALANCED)
+        target = calculate_target(inputs(), config)
+        plan = build_daily_plan(inputs(), target, config)
+        flexible = [
+            segment
+            for segment in plan.segments
+            if segment.profile is not HydraulicProfile.HIGH
+        ]
+        medium_efh = sum(
+            segment.planned_efh
+            for segment in flexible
+            if segment.profile is HydraulicProfile.MEDIUM
+        )
+        low_efh = sum(
+            segment.planned_efh
+            for segment in flexible
+            if segment.profile is HydraulicProfile.LOW
+        )
+        self.assertGreater(medium_efh, low_efh)
+
+    def test_weather_peak_moves_schedule_toward_hot_afternoon(self) -> None:
+        config = AdaptiveFiltrationConfig(strategy=Strategy.BALANCED)
+        weather = hot_afternoon_weather()
+        target = calculate_target(inputs(), config, weather=weather)
+        plan = build_daily_plan(
+            inputs(),
+            target,
+            config,
+            sunrise_minute=7 * 60,
+            sunset_minute=21 * 60,
+            solar_noon_minute=13 * 60,
+            weather=weather,
+        )
+        self.assertEqual(plan.peak_weather_minute, 16 * 60)
+        high_midpoints = [
+            (segment.start_minute + segment.end_minute) / 2
+            for segment in plan.segments
+            if segment.profile is HydraulicProfile.HIGH
+        ]
+        self.assertGreater(sum(high_midpoints) / len(high_midpoints), 13 * 60)
 
     def test_recovery_contains_high_profile(self) -> None:
         config = AdaptiveFiltrationConfig()
@@ -261,6 +405,20 @@ class SchedulerTests(unittest.TestCase):
             0,
         )
         self.assertGreaterEqual(plan.planned_efh, plan.required_efh)
+
+    def test_completed_daily_plan_does_not_schedule_remaining_daylight(self) -> None:
+        config = AdaptiveFiltrationConfig()
+        target = calculate_target(inputs(), config)
+        plan = build_daily_plan(
+            inputs(),
+            target,
+            config,
+            delivered_today_efh=target.required_efh,
+            delivered_high_minutes=60,
+            delivered_medium_minutes=60,
+        )
+        self.assertEqual(plan.segments, ())
+        self.assertFalse(plan.daylight_limited)
 
     def test_daytime_off_peak_window_is_used(self) -> None:
         config = AdaptiveFiltrationConfig(

@@ -39,6 +39,8 @@
         "adaptive_minimum_run_minutes": "Minimum segment duration (minutes)",
         "adaptive_debt_carry_limit_efh": "Maximum carried debt (EFH)",
         "adaptive_minimum_high_minutes": "Minimum daily Boost duration (minutes)",
+        "adaptive_minimum_medium_minutes": "Minimum daily medium-flow duration (minutes)",
+        "adaptive_weather_entity_id": "Hourly weather entity (leave empty for automatic)",
         "adaptive_off_peak_start": "Off-peak start (HH:MM)",
         "adaptive_off_peak_end": "Off-peak end (HH:MM)",
         "adaptive_off_peak_price": "Off-peak price (€/kWh)",

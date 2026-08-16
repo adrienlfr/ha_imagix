@@ -115,18 +115,30 @@ le mode `3`. Le mode natif `7` du coffret n’est pas utilisé par le moteur.
 Les réglages sont disponibles depuis **Paramètres → Appareils et services →
 iMagi-x → Configurer**. Ils permettent notamment de désactiver le moteur, de
 choisir la stratégie Éco/Équilibrée/Qualité et d’ajuster les débits, RPM,
-bornes EFH et durées minimales.
+bornes EFH, durées minimales et entité météo. Si cette dernière reste vide,
+la première entité `weather.*` disponible dans Home Assistant est utilisée.
 
 Le planificateur place tous les segments strictement entre le lever et le
 coucher du soleil fournis par l'entité Home Assistant `sun.sun`. Une marge
-configurable peut être ajoutée après le lever et avant le coucher. Il garantit
-par défaut un segment continu de 60 minutes en Boost chaque jour, puis combine
-Éco, Moyen et Boost pour couvrir le besoin EFH au coût estimé le plus faible.
+configurable peut être ajoutée après le lever et avant le coucher. Il récupère
+les prévisions horaires Home Assistant, augmente de façon bornée le besoin EFH
+en cas de chaleur, UV, vent, pluie ou orage, puis vise les périodes les plus
+chaudes et ensoleillées. Si la météo est indisponible, il continue avec la
+courbe solaire et le calcul reste fonctionnel.
+
+L'heure quotidienne de Boost est découpée par défaut en quatre créneaux de
+15 minutes. Ils sont répartis dans le cœur chaud du planning et ne sont donc
+pas systématiquement placés au démarrage. La filtration forme néanmoins une
+plage continue : la pompe ne s'arrête pas entre les créneaux, seuls les modes
+`4` (Éco), `3` (Moyen) et `1` (Boost) changent. La stratégie Équilibrée donne
+la majorité des EFH restantes au débit moyen afin de maintenir la giration et
+le traitement, puis utilise Éco pour le complément économique.
 
 Les heures creuses, les tarifs HC/HP et les puissances électriques des trois
-profils sont réglables. Une plage HC nocturne ne sera donc pas utilisée si elle
-se trouve hors de la fenêtre solaire. Si le besoin ne tient pas dans la durée
-du jour restante, le moteur ne programme rien la nuit : l'état
+profils sont réglables. Le tarif départage les placements après la pertinence
+thermique propre à chaque profil. Une plage HC nocturne ne sera donc pas
+utilisée si elle se trouve hors de la fenêtre solaire. Si le besoin ne tient
+pas dans la durée du jour restante, le moteur ne programme rien la nuit : l'état
 `daylight_limited` et le capteur de filtration non planifiable exposent le
 déficit restant.
 

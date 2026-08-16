@@ -5,6 +5,29 @@ Toutes les modifications notables de ce projet sont documentées ici.
 Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 projet utilise [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [0.10.0] - 2026-08-17
+
+### Ajouté
+
+- Lecture horaire des prévisions Home Assistant depuis une entité `weather`,
+  choisie automatiquement ou configurée dans les options.
+- Correction météo bornée du besoin EFH selon la chaleur prévue, l'indice UV,
+  le vent, la pluie et les orages.
+- Capteurs de diagnostic pour le débit moyen réellement délivré et l'heure du
+  pic météo ciblé.
+
+### Modifié
+
+- Le Boost quotidien d'une heure est réparti par défaut en quatre créneaux de
+  15 minutes, placés aux moments les plus pertinents selon la météo, le soleil
+  et le tarif électrique.
+- La pompe reste en marche sur une plage continue : seuls les profils Éco,
+  Moyen et Boost changent entre les créneaux.
+- La stratégie Équilibrée réserve la majorité des EFH flexibles au débit moyen
+  au lieu de laisser le calcul de coût sélectionner presque exclusivement Éco.
+- Le planning est recalculé toutes les heures et conserve un minimum quotidien
+  configurable de débit moyen.
+
 ## [0.9.2] - 2026-08-16
 
 ### Corrigé

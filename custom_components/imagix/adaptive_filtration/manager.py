@@ -12,6 +12,7 @@ from homeassistant.core import CALLBACK_TYPE, HomeAssistant, callback
 from homeassistant.helpers.event import (
     async_track_state_change_event,
     async_track_time_change,
+    async_track_time_interval,
 )
 from homeassistant.util import dt as dt_util
 
@@ -25,6 +26,7 @@ from .scheduler import build_daily_plan
 from .serializer import program_hash, serialize_plan
 from .storage import AdaptiveFiltrationStore
 from .target import calculate_target
+from .weather import WeatherProvider
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -53,11 +55,13 @@ class AdaptiveFiltrationManager:
         self.entry = entry
         self.coordinator = coordinator
         self._store = AdaptiveFiltrationStore(hass, entry.entry_id)
+        self._weather = WeatherProvider(hass)
         self._lock = asyncio.Lock()
         self._listeners: set[Callable[[], None]] = set()
         self._unsub_coordinator: CALLBACK_TYPE | None = None
         self._unsub_daily: CALLBACK_TYPE | None = None
         self._unsub_sun: CALLBACK_TYPE | None = None
+        self._unsub_weather: CALLBACK_TYPE | None = None
         self._fingerprint: tuple[object, ...] | None = None
         self._last_accounting_at: datetime | None = None
         self._last_saved_at: datetime | None = None
@@ -70,6 +74,7 @@ class AdaptiveFiltrationManager:
         self.plan: DailyPlan | None = None
         self.delivered_efh = 0.0
         self.delivered_high_minutes = 0.0
+        self.delivered_medium_minutes = 0.0
         self.debt_efh = 0.0
         self.current_profile: HydraulicProfile | None = None
         self.last_published_at: datetime | None = None
@@ -89,6 +94,9 @@ class AdaptiveFiltrationManager:
             self.delivered_efh = _as_float(stored.get("delivered_efh"), 0.0)
             self.delivered_high_minutes = _as_float(
                 stored.get("delivered_high_minutes"), 0.0
+            )
+            self.delivered_medium_minutes = _as_float(
+                stored.get("delivered_medium_minutes"), 0.0
             )
         elif stored_day is not None:
             required = _as_float(stored.get("required_efh"), 0.0)
@@ -116,6 +124,11 @@ class AdaptiveFiltrationManager:
             ["sun.sun"],
             self._handle_sun_update,
         )
+        self._unsub_weather = async_track_time_interval(
+            self.hass,
+            self._handle_weather_refresh,
+            timedelta(hours=1),
+        )
         await self.async_recalculate(force_publish=True)
 
     async def async_stop(self) -> None:
@@ -129,6 +142,9 @@ class AdaptiveFiltrationManager:
         if self._unsub_sun is not None:
             self._unsub_sun()
             self._unsub_sun = None
+        if self._unsub_weather is not None:
+            self._unsub_weather()
+            self._unsub_weather = None
         await self._async_save()
 
     @callback
@@ -161,6 +177,11 @@ class AdaptiveFiltrationManager:
         if self.plan is None or self.plan.sunrise_minute >= self.plan.sunset_minute:
             self.hass.async_create_task(self.async_recalculate(force_publish=True))
 
+    @callback
+    def _handle_weather_refresh(self, _now: datetime) -> None:
+        """Refresh the hourly forecast and adapt the remaining program."""
+        self.hass.async_create_task(self.async_recalculate())
+
     async def _async_process_coordinator_update(self) -> None:
         async with self._lock:
             now = dt_util.now()
@@ -185,8 +206,23 @@ class AdaptiveFiltrationManager:
             config = self.config
             inputs = collect_inputs(self.coordinator.data, now)
             self._fingerprint = calculation_fingerprint(inputs, config)
-            self.target = calculate_target(inputs, config, self.debt_efh)
             sunrise_minute, solar_noon_minute, sunset_minute = self._sun_window(now)
+            planning_day = inputs.now.date()
+            current_minute = inputs.now.hour * 60 + inputs.now.minute
+            if sunrise_minute < sunset_minute and current_minute >= sunset_minute:
+                planning_day += timedelta(days=1)
+            weather = await self._weather.async_get(
+                config.weather_entity_id,
+                now,
+                force=force_publish,
+            )
+            self.target = calculate_target(
+                inputs,
+                config,
+                self.debt_efh,
+                weather=weather,
+                planning_day=planning_day,
+            )
             sun_available = sunrise_minute < sunset_minute
             self.plan = build_daily_plan(
                 inputs,
@@ -197,6 +233,8 @@ class AdaptiveFiltrationManager:
                 sunset_minute=sunset_minute,
                 delivered_today_efh=self.delivered_efh,
                 delivered_high_minutes=self.delivered_high_minutes,
+                delivered_medium_minutes=self.delivered_medium_minutes,
+                weather=weather,
             )
             program = serialize_plan(self.plan, config)
             new_hash = program_hash(program)
@@ -273,6 +311,8 @@ class AdaptiveFiltrationManager:
         )
         if self.current_profile is HydraulicProfile.HIGH:
             self.delivered_high_minutes += elapsed / 60.0
+        elif self.current_profile is HydraulicProfile.MEDIUM:
+            self.delivered_medium_minutes += elapsed / 60.0
 
     def _confirmed_profile(
         self,
@@ -298,6 +338,7 @@ class AdaptiveFiltrationManager:
             self.debt_efh = min(self.config.debt_carry_limit_efh, missing)
         self.delivered_efh = 0.0
         self.delivered_high_minutes = 0.0
+        self.delivered_medium_minutes = 0.0
         self._accounting_day = now.date()
         self._fingerprint = None
         self._last_accounting_at = now
@@ -334,6 +375,7 @@ class AdaptiveFiltrationManager:
                 "required_efh": round(required, 4),
                 "delivered_efh": round(self.delivered_efh, 4),
                 "delivered_high_minutes": round(self.delivered_high_minutes, 2),
+                "delivered_medium_minutes": round(self.delivered_medium_minutes, 2),
                 "debt_efh": round(self.debt_efh, 4),
                 "program_hash": self._last_program_hash,
             }
@@ -353,12 +395,15 @@ class AdaptiveFiltrationManager:
             ),
             "delivered_efh": round(self.delivered_efh, 3),
             "delivered_high_minutes": round(self.delivered_high_minutes, 1),
+            "delivered_medium_minutes": round(self.delivered_medium_minutes, 1),
         }
         if self.target is not None:
             attributes["target"] = {
                 "base_efh": self.target.base_efh,
                 "volume_factor": self.target.volume_factor,
                 "water_quality_factor": self.target.water_quality_factor,
+                "environment_factor": self.target.environment_factor,
+                "weather_bonus_efh": self.target.weather_bonus_efh,
                 "reasons": list(self.target.reasons),
             }
         if self.plan is not None:

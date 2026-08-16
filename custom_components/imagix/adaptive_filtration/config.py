@@ -29,6 +29,8 @@ CONF_LOW_POWER = "adaptive_low_power_w"
 CONF_MEDIUM_POWER = "adaptive_medium_power_w"
 CONF_HIGH_POWER = "adaptive_high_power_w"
 CONF_DAYLIGHT_MARGIN = "adaptive_daylight_margin_minutes"
+CONF_WEATHER_ENTITY = "adaptive_weather_entity_id"
+CONF_MINIMUM_MEDIUM_MINUTES = "adaptive_minimum_medium_minutes"
 
 DEFAULT_REFERENCE_FLOW_M3H = 21.0
 
@@ -61,6 +63,8 @@ class AdaptiveFiltrationConfig:
     medium_power_w: float = 610.0
     high_power_w: float = 1266.0
     daylight_margin_minutes: int = 0
+    weather_entity_id: str | None = None
+    minimum_medium_minutes: int = 60
 
     @property
     def profiles(self) -> dict[HydraulicProfile, ProfileSpec]:
@@ -174,6 +178,10 @@ def load_config(options: Mapping[str, Any]) -> AdaptiveFiltrationConfig:
         medium_power_w=number(CONF_MEDIUM_POWER, 610.0, 0.0),
         high_power_w=number(CONF_HIGH_POWER, 1266.0, 0.0),
         daylight_margin_minutes=integer(CONF_DAYLIGHT_MARGIN, 0, 0),
+        weather_entity_id=(
+            str(options.get(CONF_WEATHER_ENTITY, "")).strip() or None
+        ),
+        minimum_medium_minutes=integer(CONF_MINIMUM_MEDIUM_MINUTES, 60, 0),
     )
 
 

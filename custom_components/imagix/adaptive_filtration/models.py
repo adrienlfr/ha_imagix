@@ -69,6 +69,30 @@ class FiltrationInputs:
 
 
 @dataclass(frozen=True, slots=True)
+class WeatherPoint:
+    """Normalized hourly weather forecast point."""
+
+    at: datetime
+    temperature_c: float | None = None
+    cloud_coverage: float | None = None
+    uv_index: float | None = None
+    precipitation_mm: float | None = None
+    precipitation_probability: float | None = None
+    wind_speed_kmh: float | None = None
+    condition: str | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class WeatherContext:
+    """Current weather and forecasts used by the adaptive engine."""
+
+    entity_id: str | None = None
+    current_condition: str | None = None
+    points: tuple[WeatherPoint, ...] = ()
+    available: bool = False
+
+
+@dataclass(frozen=True, slots=True)
 class TargetResult:
     """Result of the daily filtration load calculation."""
 
@@ -76,6 +100,8 @@ class TargetResult:
     required_efh: float
     volume_factor: float
     water_quality_factor: float
+    environment_factor: float
+    weather_bonus_efh: float
     confidence: DataConfidence
     recovery_required: bool = False
     reasons: tuple[str, ...] = ()
@@ -127,6 +153,9 @@ class DailyPlan:
     estimated_cost: float = 0.0
     off_peak_minutes: int = 0
     high_minutes: float = 0.0
+    medium_minutes: float = 0.0
+    peak_weather_minute: int | None = None
+    weather_entity_id: str | None = None
     unmet_efh: float = 0.0
     daylight_limited: bool = False
     segments: tuple[PlanSegment, ...] = field(default_factory=tuple)
@@ -144,6 +173,9 @@ class DailyPlan:
             "estimated_cost": round(self.estimated_cost, 3),
             "off_peak_minutes": self.off_peak_minutes,
             "high_minutes": round(self.high_minutes, 1),
+            "medium_minutes": round(self.medium_minutes, 1),
+            "peak_weather_minute": self.peak_weather_minute,
+            "weather_entity_id": self.weather_entity_id,
             "unmet_efh": round(self.unmet_efh, 3),
             "daylight_limited": self.daylight_limited,
             "segments": [segment.as_dict() for segment in self.segments],

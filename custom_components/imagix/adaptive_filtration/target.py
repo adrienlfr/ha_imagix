@@ -1,8 +1,11 @@
 """Daily EFH target calculation."""
 from __future__ import annotations
 
+from datetime import date
+
 from .config import AdaptiveFiltrationConfig
-from .models import FiltrationInputs, TargetResult
+from .environment import environment_adjustment
+from .models import FiltrationInputs, TargetResult, WeatherContext
 
 TEMPERATURE_CURVE = (
     (14.0, 2.0),
@@ -33,6 +36,8 @@ def calculate_target(
     inputs: FiltrationInputs,
     config: AdaptiveFiltrationConfig,
     filtration_debt_efh: float = 0.0,
+    weather: WeatherContext | None = None,
+    planning_day: date | None = None,
 ) -> TargetResult:
     """Calculate today's bounded EFH requirement."""
     reasons: list[str] = []
@@ -65,8 +70,17 @@ def calculate_target(
         quality_factor = max(quality_factor, 1.05)
         reasons.append("ph_out_of_range")
 
+    environment = environment_adjustment(
+        weather or WeatherContext(),
+        planning_day or inputs.now.date(),
+    )
+    reasons.extend(environment.reasons)
     debt = _clamp(filtration_debt_efh, 0.0, config.debt_carry_limit_efh)
-    required = base_efh * volume_factor * quality_factor + debt
+    required = (
+        base_efh * volume_factor * quality_factor * environment.factor
+        + environment.bonus_efh
+        + debt
+    )
     required = _clamp(required, config.min_efh, config.max_efh)
 
     return TargetResult(
@@ -74,6 +88,8 @@ def calculate_target(
         required_efh=round(required, 3),
         volume_factor=round(volume_factor, 3),
         water_quality_factor=round(quality_factor, 3),
+        environment_factor=round(environment.factor, 3),
+        weather_bonus_efh=round(environment.bonus_efh, 3),
         confidence=inputs.confidence,
         recovery_required=recovery_required,
         reasons=tuple(reasons),
@@ -82,4 +98,3 @@ def calculate_target(
 
 def _clamp(value: float, minimum: float, maximum: float) -> float:
     return min(maximum, max(minimum, value))
-

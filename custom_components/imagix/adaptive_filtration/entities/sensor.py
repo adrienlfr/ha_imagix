@@ -88,6 +88,25 @@ DESCRIPTIONS = (
         value_fn=lambda manager: round(manager.delivered_high_minutes, 1),
     ),
     AdaptiveSensorDescription(
+        key="adaptive_filtration_delivered_medium_minutes",
+        name="Débit moyen délivré aujourd'hui",
+        icon="mdi:speedometer-medium",
+        unit="min",
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda manager: round(manager.delivered_medium_minutes, 1),
+    ),
+    AdaptiveSensorDescription(
+        key="adaptive_filtration_weather_peak",
+        name="Pic météo ciblé",
+        icon="mdi:weather-sunny-alert",
+        value_fn=lambda manager: (
+            _format_minute(manager.plan.peak_weather_minute)
+            if manager.plan is not None
+            and manager.plan.peak_weather_minute is not None
+            else None
+        ),
+    ),
+    AdaptiveSensorDescription(
         key="adaptive_filtration_estimated_cost",
         name="Coût estimé de la filtration",
         icon="mdi:currency-eur",

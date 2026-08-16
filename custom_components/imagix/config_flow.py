@@ -32,12 +32,14 @@ from .adaptive_filtration.config import (
     CONF_MIN_EFH,
     CONF_MINIMUM_RUN,
     CONF_MINIMUM_HIGH_MINUTES,
+    CONF_MINIMUM_MEDIUM_MINUTES,
     CONF_OFF_PEAK_END,
     CONF_OFF_PEAK_PRICE,
     CONF_OFF_PEAK_START,
     CONF_PEAK_PRICE,
     CONF_REFERENCE_VOLUME,
     CONF_STRATEGY,
+    CONF_WEATHER_ENTITY,
     AdaptiveFiltrationConfig,
 )
 from .adaptive_filtration.models import Strategy
@@ -197,6 +199,20 @@ class ImagixOptionsFlow(config_entries.OptionsFlow):
                         defaults.minimum_high_minutes,
                     ),
                 ): vol.All(vol.Coerce(int), vol.Range(min=0, max=240)),
+                vol.Optional(
+                    CONF_MINIMUM_MEDIUM_MINUTES,
+                    default=options.get(
+                        CONF_MINIMUM_MEDIUM_MINUTES,
+                        defaults.minimum_medium_minutes,
+                    ),
+                ): vol.All(vol.Coerce(int), vol.Range(min=0, max=360)),
+                vol.Optional(
+                    CONF_WEATHER_ENTITY,
+                    default=options.get(
+                        CONF_WEATHER_ENTITY,
+                        defaults.weather_entity_id or "",
+                    ),
+                ): cv.string,
                 vol.Optional(
                     CONF_OFF_PEAK_START,
                     default=options.get(
