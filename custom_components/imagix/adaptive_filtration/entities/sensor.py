@@ -23,6 +23,27 @@ class AdaptiveSensorDescription:
     state_class: SensorStateClass | None = None
 
 
+def _format_minute(minute: int) -> str:
+    if minute == 1440:
+        return "24:00"
+    return f"{minute // 60:02d}:{minute % 60:02d}"
+
+
+def _next_segment(manager: AdaptiveFiltrationManager) -> str | None:
+    if manager.plan is None:
+        return None
+    now: datetime = dt_util.now()
+    minute = now.hour * 60 + now.minute
+    for segment in manager.plan.segments:
+        if segment.end_minute > minute:
+            return (
+                f"{_format_minute(segment.start_minute)}-"
+                f"{_format_minute(segment.end_minute)} "
+                f"{segment.mode_label.value}"
+            )
+    return None
+
+
 DESCRIPTIONS = (
     AdaptiveSensorDescription(
         key="adaptive_filtration_status",
@@ -130,25 +151,3 @@ class AdaptiveFiltrationSensor(AdaptiveFiltrationEntity, SensorEntity):
         if self._description.key != "adaptive_filtration_status":
             return None
         return self.manager.plan_attributes
-
-
-def _next_segment(manager: AdaptiveFiltrationManager) -> str | None:
-    if manager.plan is None:
-        return None
-    now: datetime = dt_util.now()
-    minute = now.hour * 60 + now.minute
-    for segment in manager.plan.segments:
-        if segment.end_minute > minute:
-            return (
-                f"{_format_minute(segment.start_minute)}-"
-                f"{_format_minute(segment.end_minute)} "
-                f"{segment.mode_label.value}"
-            )
-    return None
-
-
-def _format_minute(minute: int) -> str:
-    if minute == 1440:
-        return "24:00"
-    return f"{minute // 60:02d}:{minute % 60:02d}"
-

@@ -14,8 +14,8 @@ La version de `custom_components/imagix/manifest.json` doit être strictement
 identique au tag Git, sans le préfixe `v` :
 
 ```text
-manifest.json : 0.8.0
-tag Git       : v0.8.0
+manifest.json : 0.8.1
+tag Git       : v0.8.1
 ```
 
 ## Préparer une release
@@ -27,22 +27,22 @@ tag Git       : v0.8.0
 4. Contrôler la cohérence :
 
    ```bash
-   python3 scripts/check_version.py v0.8.0
+   python3 scripts/check_version.py v0.8.1
    ```
 
 5. Valider les changements dans Git :
 
    ```bash
    git add CHANGELOG.md custom_components/imagix/manifest.json
-   git commit -m "Release 0.8.0"
+   git commit -m "Release 0.8.1"
    ```
 
 6. Créer et pousser le tag :
 
    ```bash
-   git tag -a v0.8.0 -m "iMagi-x 0.8.0"
+   git tag -a v0.8.1 -m "iMagi-x 0.8.1"
    git push origin main
-   git push origin v0.8.0
+   git push origin v0.8.1
    ```
 
 Le workflow `release.yml` vérifie la correspondance des versions puis crée la

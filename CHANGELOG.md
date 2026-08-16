@@ -5,6 +5,13 @@ Toutes les modifications notables de ce projet sont documentées ici.
 Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 projet utilise [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [0.8.1] - 2026-08-16
+
+### Corrigé
+
+- Corrige l'import de la plateforme `sensor` en définissant le calcul du
+  prochain segment avant la déclaration des capteurs adaptatifs.
+
 ## [0.8.0] - 2026-08-16
 
 ### Ajouté
