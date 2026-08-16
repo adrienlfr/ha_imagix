@@ -9,7 +9,10 @@ from typing import Any
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import CALLBACK_TYPE, HomeAssistant, callback
-from homeassistant.helpers.event import async_track_time_change
+from homeassistant.helpers.event import (
+    async_track_state_change_event,
+    async_track_time_change,
+)
 from homeassistant.util import dt as dt_util
 
 from ..api import ImagixConnectionError
@@ -30,6 +33,8 @@ STATUS_DISABLED = "disabled"
 STATUS_READY = "ready"
 STATUS_PUBLISHED = "published"
 STATUS_SAFE_MODE = "safe_mode"
+STATUS_DAYLIGHT_LIMITED = "daylight_limited"
+STATUS_SUN_UNAVAILABLE = "sun_unavailable"
 STATUS_ERROR = "error"
 
 MAX_ACCOUNTING_GAP_SECONDS = 60
@@ -52,6 +57,7 @@ class AdaptiveFiltrationManager:
         self._listeners: set[Callable[[], None]] = set()
         self._unsub_coordinator: CALLBACK_TYPE | None = None
         self._unsub_daily: CALLBACK_TYPE | None = None
+        self._unsub_sun: CALLBACK_TYPE | None = None
         self._fingerprint: tuple[object, ...] | None = None
         self._last_accounting_at: datetime | None = None
         self._last_saved_at: datetime | None = None
@@ -63,6 +69,7 @@ class AdaptiveFiltrationManager:
         self.target: TargetResult | None = None
         self.plan: DailyPlan | None = None
         self.delivered_efh = 0.0
+        self.delivered_high_minutes = 0.0
         self.debt_efh = 0.0
         self.current_profile: HydraulicProfile | None = None
         self.last_published_at: datetime | None = None
@@ -80,6 +87,9 @@ class AdaptiveFiltrationManager:
         self.debt_efh = _as_float(stored.get("debt_efh"), 0.0)
         if stored_day == now.date():
             self.delivered_efh = _as_float(stored.get("delivered_efh"), 0.0)
+            self.delivered_high_minutes = _as_float(
+                stored.get("delivered_high_minutes"), 0.0
+            )
         elif stored_day is not None:
             required = _as_float(stored.get("required_efh"), 0.0)
             delivered = _as_float(stored.get("delivered_efh"), 0.0)
@@ -101,6 +111,11 @@ class AdaptiveFiltrationManager:
             minute=5,
             second=0,
         )
+        self._unsub_sun = async_track_state_change_event(
+            self.hass,
+            ["sun.sun"],
+            self._handle_sun_update,
+        )
         await self.async_recalculate(force_publish=True)
 
     async def async_stop(self) -> None:
@@ -111,6 +126,9 @@ class AdaptiveFiltrationManager:
         if self._unsub_daily is not None:
             self._unsub_daily()
             self._unsub_daily = None
+        if self._unsub_sun is not None:
+            self._unsub_sun()
+            self._unsub_sun = None
         await self._async_save()
 
     @callback
@@ -137,6 +155,12 @@ class AdaptiveFiltrationManager:
     def _handle_new_day(self, _now: datetime) -> None:
         self.hass.async_create_task(self.async_recalculate(force_publish=True))
 
+    @callback
+    def _handle_sun_update(self, _event: Any) -> None:
+        """Retry a safe empty plan as soon as valid sun data becomes available."""
+        if self.plan is None or self.plan.sunrise_minute >= self.plan.sunset_minute:
+            self.hass.async_create_task(self.async_recalculate(force_publish=True))
+
     async def _async_process_coordinator_update(self) -> None:
         async with self._lock:
             now = dt_util.now()
@@ -162,21 +186,30 @@ class AdaptiveFiltrationManager:
             inputs = collect_inputs(self.coordinator.data, now)
             self._fingerprint = calculation_fingerprint(inputs, config)
             self.target = calculate_target(inputs, config, self.debt_efh)
+            sunrise_minute, solar_noon_minute, sunset_minute = self._sun_window(now)
+            sun_available = sunrise_minute < sunset_minute
             self.plan = build_daily_plan(
                 inputs,
                 self.target,
                 config,
-                solar_noon_minute=self._solar_noon_minute(now),
+                solar_noon_minute=solar_noon_minute,
+                sunrise_minute=sunrise_minute,
+                sunset_minute=sunset_minute,
                 delivered_today_efh=self.delivered_efh,
+                delivered_high_minutes=self.delivered_high_minutes,
             )
             program = serialize_plan(self.plan, config)
             new_hash = program_hash(program)
 
-            self.last_error = None
+            self.last_error = None if sun_available else "sun_data_unavailable"
             if not config.enabled:
                 self.status = STATUS_DISABLED
+            elif not sun_available:
+                self.status = STATUS_SUN_UNAVAILABLE
             elif self.target.confidence.value == "low":
                 self.status = STATUS_SAFE_MODE
+            elif self.plan.daylight_limited:
+                self.status = STATUS_DAYLIGHT_LIMITED
             else:
                 self.status = STATUS_READY
 
@@ -195,9 +228,17 @@ class AdaptiveFiltrationManager:
                     self._last_program_hash = new_hash
                     self.last_published_at = now
                     self.status = (
-                        STATUS_SAFE_MODE
-                        if self.target.confidence.value == "low"
-                        else STATUS_PUBLISHED
+                        STATUS_SUN_UNAVAILABLE
+                        if not sun_available
+                        else (
+                            STATUS_SAFE_MODE
+                            if self.target.confidence.value == "low"
+                            else (
+                                STATUS_DAYLIGHT_LIMITED
+                                if self.plan.daylight_limited
+                                else STATUS_PUBLISHED
+                            )
+                        )
                     )
                     _LOGGER.info(
                         "Published adaptive filtration plan: %.3f EFH in %s segments",
@@ -230,6 +271,8 @@ class AdaptiveFiltrationManager:
             profile,
             self.config.reference_flow_m3h,
         )
+        if self.current_profile is HydraulicProfile.HIGH:
+            self.delivered_high_minutes += elapsed / 60.0
 
     def _confirmed_profile(
         self,
@@ -254,23 +297,34 @@ class AdaptiveFiltrationManager:
             missing = max(0.0, self.plan.required_efh - self.delivered_efh)
             self.debt_efh = min(self.config.debt_carry_limit_efh, missing)
         self.delivered_efh = 0.0
+        self.delivered_high_minutes = 0.0
         self._accounting_day = now.date()
         self._fingerprint = None
         self._last_accounting_at = now
 
-    def _solar_noon_minute(self, now: datetime) -> int:
+    def _sun_window(self, now: datetime) -> tuple[int, int, int]:
+        """Return today's local sunrise, solar noon and sunset minutes."""
         sun_state = self.hass.states.get("sun.sun")
         if sun_state is None:
-            return 13 * 60
-        next_noon = dt_util.parse_datetime(sun_state.attributes.get("next_noon", ""))
-        if next_noon is None:
-            return 13 * 60
-        local_noon = dt_util.as_local(next_noon)
-        if local_noon.date() > now.date():
-            local_noon -= timedelta(days=1)
-        if abs((local_noon.date() - now.date()).days) > 1:
-            return 13 * 60
-        return local_noon.hour * 60 + local_noon.minute
+            return 0, 0, 0
+
+        def event_minute(attribute: str) -> int | None:
+            event = dt_util.parse_datetime(sun_state.attributes.get(attribute, ""))
+            if event is None:
+                return None
+            local_event = dt_util.as_local(event)
+            if local_event.date() > now.date():
+                local_event -= timedelta(days=1)
+            if abs((local_event.date() - now.date()).days) > 1:
+                return None
+            return local_event.hour * 60 + local_event.minute
+
+        sunrise = event_minute("next_rising")
+        sunset = event_minute("next_setting")
+        if sunrise is None or sunset is None or sunrise >= sunset:
+            return 0, 0, 0
+        noon = event_minute("next_noon") or (sunrise + sunset) // 2
+        return sunrise, noon, sunset
 
     async def _async_save(self) -> None:
         required = self.plan.required_efh if self.plan is not None else 0.0
@@ -279,6 +333,7 @@ class AdaptiveFiltrationManager:
                 "date": (self._accounting_day or dt_util.now().date()).isoformat(),
                 "required_efh": round(required, 4),
                 "delivered_efh": round(self.delivered_efh, 4),
+                "delivered_high_minutes": round(self.delivered_high_minutes, 2),
                 "debt_efh": round(self.debt_efh, 4),
                 "program_hash": self._last_program_hash,
             }
@@ -296,6 +351,8 @@ class AdaptiveFiltrationManager:
                 if self.last_published_at is not None
                 else None
             ),
+            "delivered_efh": round(self.delivered_efh, 3),
+            "delivered_high_minutes": round(self.delivered_high_minutes, 1),
         }
         if self.target is not None:
             attributes["target"] = {

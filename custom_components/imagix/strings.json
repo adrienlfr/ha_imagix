@@ -24,7 +24,7 @@
     "step": {
       "init": {
         "title": "Filtration adaptative",
-        "description": "Configure le calcul EFH et le planning expert publié dans le coffret.",
+      "description": "Configure le calcul EFH, la fenêtre solaire et l'optimisation HC/HP du planning expert.",
         "data": {
           "adaptive_filtration_enabled": "Activer la filtration adaptative",
           "adaptive_filtration_strategy": "Stratégie",
@@ -37,9 +37,17 @@
           "adaptive_high_rpm": "Régime Boost (tr/min)",
           "adaptive_min_efh": "EFH quotidiennes minimales",
           "adaptive_max_efh": "EFH quotidiennes maximales",
-          "adaptive_minimum_run_minutes": "Durée minimale d'un segment (minutes)",
-          "adaptive_solar_share_target": "Part de filtration solaire (0 à 1)",
-          "adaptive_debt_carry_limit_efh": "Dette maximale reportée (EFH)"
+        "adaptive_minimum_run_minutes": "Durée minimale d'un segment (minutes)",
+        "adaptive_debt_carry_limit_efh": "Dette maximale reportée (EFH)",
+        "adaptive_minimum_high_minutes": "Durée Boost minimale quotidienne (minutes)",
+        "adaptive_off_peak_start": "Début des heures creuses (HH:MM)",
+        "adaptive_off_peak_end": "Fin des heures creuses (HH:MM)",
+        "adaptive_off_peak_price": "Prix en heures creuses (€/kWh)",
+        "adaptive_peak_price": "Prix en heures pleines (€/kWh)",
+        "adaptive_low_power_w": "Puissance Éco (W)",
+        "adaptive_medium_power_w": "Puissance moyenne (W)",
+        "adaptive_high_power_w": "Puissance Boost (W)",
+        "adaptive_daylight_margin_minutes": "Marge après lever et avant coucher du soleil (minutes)"
         }
       }
     }

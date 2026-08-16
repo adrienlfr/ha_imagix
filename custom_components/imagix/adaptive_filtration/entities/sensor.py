@@ -80,6 +80,34 @@ DESCRIPTIONS = (
         value_fn=lambda manager: round(manager.delivered_efh, 3),
     ),
     AdaptiveSensorDescription(
+        key="adaptive_filtration_delivered_high_minutes",
+        name="Boost délivré aujourd'hui",
+        icon="mdi:speedometer",
+        unit="min",
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda manager: round(manager.delivered_high_minutes, 1),
+    ),
+    AdaptiveSensorDescription(
+        key="adaptive_filtration_estimated_cost",
+        name="Coût estimé de la filtration",
+        icon="mdi:currency-eur",
+        unit="€",
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda manager: (
+            manager.plan.estimated_cost if manager.plan is not None else None
+        ),
+    ),
+    AdaptiveSensorDescription(
+        key="adaptive_filtration_unmet_efh",
+        name="Filtration non planifiable en journée",
+        icon="mdi:weather-sunset-down",
+        unit="EFH",
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda manager: (
+            manager.plan.unmet_efh if manager.plan is not None else None
+        ),
+    ),
+    AdaptiveSensorDescription(
         key="adaptive_filtration_debt_efh",
         name="Dette de filtration",
         icon="mdi:water-alert-outline",

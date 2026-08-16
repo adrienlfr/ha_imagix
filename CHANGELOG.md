@@ -5,6 +5,25 @@ Toutes les modifications notables de ce projet sont documentées ici.
 Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 projet utilise [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [0.9.0] - 2026-08-16
+
+### Ajouté
+
+- Optimisation du coût électrique entre heures creuses et heures pleines à
+  partir des puissances configurées pour les profils Éco, Moyen et Boost.
+- Contrainte stricte de filtration entre le lever et le coucher du soleil,
+  obtenus depuis l'entité Home Assistant `sun.sun`.
+- Minimum quotidien configurable de 60 minutes continues en mode Boost.
+- Capteurs de diagnostic pour la durée Boost confirmée, le coût estimé et le
+  besoin EFH impossible à placer dans la fenêtre solaire.
+
+### Modifié
+
+- Le planning utilise plusieurs profils hydrauliques et privilégie les plages
+  HC uniquement lorsqu'elles chevauchent la journée.
+- Le suivi persistant comptabilise séparément les minutes réellement
+  confirmées à haut débit.
+
 ## [0.8.1] - 2026-08-16
 
 ### Corrigé

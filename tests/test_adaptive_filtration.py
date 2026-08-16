@@ -10,7 +10,10 @@ import unittest
 INTEGRATION_ROOT = Path(__file__).resolve().parents[1] / "custom_components" / "imagix"
 sys.path.insert(0, str(INTEGRATION_ROOT))
 
-from adaptive_filtration.config import AdaptiveFiltrationConfig  # noqa: E402
+from adaptive_filtration.config import (  # noqa: E402
+    AdaptiveFiltrationConfig,
+    load_config,
+)
 from adaptive_filtration.inputs import collect_inputs  # noqa: E402
 from adaptive_filtration.models import (  # noqa: E402
     DataConfidence,
@@ -119,40 +122,55 @@ class ProfileTests(unittest.TestCase):
 class SchedulerTests(unittest.TestCase):
     """Test planning and controller serialization."""
 
-    def test_balanced_plan_covers_target_and_uses_medium_mode(self) -> None:
+    def test_plan_covers_target_inside_daylight_with_daily_high(self) -> None:
         config = AdaptiveFiltrationConfig(strategy=Strategy.BALANCED)
         target = calculate_target(inputs(), config)
-        plan = build_daily_plan(inputs(), target, config)
+        plan = build_daily_plan(
+            inputs(), target, config, sunrise_minute=7 * 60, sunset_minute=21 * 60
+        )
         self.assertGreaterEqual(plan.planned_efh, plan.required_efh)
         self.assertTrue(plan.segments)
-        self.assertTrue(
-            all(segment.profile is HydraulicProfile.MEDIUM for segment in plan.segments)
+        self.assertTrue(all(segment.start_minute >= 7 * 60 for segment in plan.segments))
+        self.assertTrue(all(segment.end_minute <= 21 * 60 for segment in plan.segments))
+        self.assertGreaterEqual(
+            sum(
+                segment.duration_minutes
+                for segment in plan.segments
+                if segment.profile is HydraulicProfile.HIGH
+            ),
+            60,
         )
         program = serialize_plan(plan, config)
         modes = {step["mode"] for step in program[0]["steps"]}
-        self.assertEqual(modes, {0, 3})
+        self.assertIn(1, modes)
+        self.assertIn(0, modes)
 
-    def test_eco_plan_uses_low_and_medium(self) -> None:
+    def test_cost_optimized_plan_uses_multiple_profiles(self) -> None:
         config = AdaptiveFiltrationConfig(strategy=Strategy.ECO)
         target = calculate_target(inputs(), config)
         plan = build_daily_plan(inputs(), target, config)
         self.assertGreaterEqual(plan.planned_efh, plan.required_efh)
         profiles = {segment.profile for segment in plan.segments}
-        self.assertEqual(
-            profiles,
-            {HydraulicProfile.LOW, HydraulicProfile.MEDIUM},
-        )
+        self.assertIn(HydraulicProfile.HIGH, profiles)
+        self.assertGreaterEqual(len(profiles), 2)
         modes = {
             step["mode"]
             for step in serialize_plan(plan, config)[0]["steps"]
         }
-        self.assertEqual(modes, {0, 3, 4})
+        self.assertIn(1, modes)
+        self.assertTrue({3, 4} & modes)
 
-    def test_recovery_starts_with_high_profile(self) -> None:
+    def test_recovery_contains_high_profile(self) -> None:
         config = AdaptiveFiltrationConfig()
         target = calculate_target(inputs(orp=500), config)
         plan = build_daily_plan(inputs(orp=500), target, config)
-        self.assertIs(plan.segments[0].profile, HydraulicProfile.HIGH)
+        high_segments = [
+            segment
+            for segment in plan.segments
+            if segment.profile is HydraulicProfile.HIGH
+        ]
+        self.assertTrue(high_segments)
+        self.assertIn("water_quality_recovery", high_segments[0].reason)
         modes = {
             step["mode"]
             for step in serialize_plan(plan, config)[0]["steps"]
@@ -180,7 +198,80 @@ class SchedulerTests(unittest.TestCase):
         )
         self.assertGreaterEqual(plan.segments[0].start_minute, 16 * 60 + 5)
         self.assertGreaterEqual(plan.planned_efh, plan.required_efh)
-        self.assertAlmostEqual(plan.segments[0].planned_efh, 3.5)
+
+    def test_night_off_peak_window_is_ignored(self) -> None:
+        config = AdaptiveFiltrationConfig(
+            off_peak_start_minute=22 * 60,
+            off_peak_end_minute=6 * 60,
+        )
+        target = calculate_target(inputs(), config)
+        plan = build_daily_plan(
+            inputs(), target, config, sunrise_minute=8 * 60, sunset_minute=20 * 60
+        )
+        self.assertEqual(plan.off_peak_minutes, 0)
+        self.assertTrue(all(8 * 60 <= item.start_minute for item in plan.segments))
+        self.assertTrue(all(item.end_minute <= 20 * 60 for item in plan.segments))
+
+    def test_confirmed_daily_high_is_not_forced_twice(self) -> None:
+        config = AdaptiveFiltrationConfig()
+        target = calculate_target(inputs(), config)
+        plan = build_daily_plan(
+            inputs(),
+            target,
+            config,
+            delivered_high_minutes=60,
+        )
+        self.assertEqual(
+            sum(
+                item.duration_minutes
+                for item in plan.segments
+                if item.profile is HydraulicProfile.HIGH
+            ),
+            0,
+        )
+        self.assertGreaterEqual(plan.planned_efh, plan.required_efh)
+
+    def test_daytime_off_peak_window_is_used(self) -> None:
+        config = AdaptiveFiltrationConfig(
+            off_peak_start_minute=10 * 60,
+            off_peak_end_minute=14 * 60,
+            off_peak_price=0.05,
+            peak_price=0.50,
+        )
+        target = calculate_target(inputs(), config)
+        plan = build_daily_plan(
+            inputs(), target, config, sunrise_minute=8 * 60, sunset_minute=20 * 60
+        )
+        self.assertGreater(plan.off_peak_minutes, 0)
+        high = next(
+            item for item in plan.segments if item.profile is HydraulicProfile.HIGH
+        )
+        self.assertGreaterEqual(high.start_minute, 10 * 60)
+        self.assertLessEqual(high.end_minute, 14 * 60)
+
+    def test_impossible_target_never_escapes_daylight(self) -> None:
+        config = AdaptiveFiltrationConfig(max_efh=12.0)
+        hot_inputs = inputs(temperature=40)
+        target = calculate_target(hot_inputs, config, filtration_debt_efh=3.0)
+        plan = build_daily_plan(
+            hot_inputs,
+            target,
+            config,
+            sunrise_minute=10 * 60,
+            sunset_minute=12 * 60,
+        )
+        self.assertTrue(plan.daylight_limited)
+        self.assertGreater(plan.unmet_efh, 0)
+        self.assertTrue(all(item.start_minute >= 10 * 60 for item in plan.segments))
+        self.assertTrue(all(item.end_minute <= 12 * 60 for item in plan.segments))
+
+    def test_cross_midnight_tariff_config(self) -> None:
+        config = load_config(
+            {"adaptive_off_peak_start": "22:30", "adaptive_off_peak_end": "06:30"}
+        )
+        self.assertTrue(config.is_off_peak(23 * 60))
+        self.assertTrue(config.is_off_peak(6 * 60))
+        self.assertFalse(config.is_off_peak(12 * 60))
 
 
 if __name__ == "__main__":

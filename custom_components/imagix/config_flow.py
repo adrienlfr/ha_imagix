@@ -17,17 +17,25 @@ import homeassistant.helpers.config_validation as cv
 from .adaptive_filtration.config import (
     CONF_ADAPTIVE_ENABLED,
     CONF_DEBT_LIMIT,
+    CONF_DAYLIGHT_MARGIN,
     CONF_HIGH_FLOW,
+    CONF_HIGH_POWER,
     CONF_HIGH_RPM,
     CONF_LOW_FLOW,
+    CONF_LOW_POWER,
     CONF_LOW_RPM,
     CONF_MAX_EFH,
     CONF_MEDIUM_FLOW,
+    CONF_MEDIUM_POWER,
     CONF_MEDIUM_RPM,
     CONF_MIN_EFH,
     CONF_MINIMUM_RUN,
+    CONF_MINIMUM_HIGH_MINUTES,
+    CONF_OFF_PEAK_END,
+    CONF_OFF_PEAK_PRICE,
+    CONF_OFF_PEAK_START,
+    CONF_PEAK_PRICE,
     CONF_REFERENCE_VOLUME,
-    CONF_SOLAR_SHARE,
     CONF_STRATEGY,
     AdaptiveFiltrationConfig,
 )
@@ -108,6 +116,11 @@ class ImagixOptionsFlow(config_entries.OptionsFlow):
 
         defaults = AdaptiveFiltrationConfig()
         options = self.config_entry.options
+        time_validator = vol.Match(r"^(?:[01]\d|2[0-3]):[0-5]\d$")
+
+        def format_minute(minute: int) -> str:
+            return f"{minute // 60:02d}:{minute % 60:02d}"
+
         schema = vol.Schema(
             {
                 vol.Optional(
@@ -165,19 +178,66 @@ class ImagixOptionsFlow(config_entries.OptionsFlow):
                     ),
                 ): vol.All(vol.Coerce(int), vol.Range(min=1, max=180)),
                 vol.Optional(
-                    CONF_SOLAR_SHARE,
-                    default=options.get(
-                        CONF_SOLAR_SHARE,
-                        defaults.solar_share_target,
-                    ),
-                ): vol.All(vol.Coerce(float), vol.Range(min=0, max=1)),
-                vol.Optional(
                     CONF_DEBT_LIMIT,
                     default=options.get(
                         CONF_DEBT_LIMIT,
                         defaults.debt_carry_limit_efh,
                     ),
                 ): vol.All(vol.Coerce(float), vol.Range(min=0, max=12)),
+                vol.Optional(
+                    CONF_MINIMUM_HIGH_MINUTES,
+                    default=options.get(
+                        CONF_MINIMUM_HIGH_MINUTES,
+                        defaults.minimum_high_minutes,
+                    ),
+                ): vol.All(vol.Coerce(int), vol.Range(min=0, max=240)),
+                vol.Optional(
+                    CONF_OFF_PEAK_START,
+                    default=options.get(
+                        CONF_OFF_PEAK_START,
+                        format_minute(defaults.off_peak_start_minute),
+                    ),
+                ): time_validator,
+                vol.Optional(
+                    CONF_OFF_PEAK_END,
+                    default=options.get(
+                        CONF_OFF_PEAK_END,
+                        format_minute(defaults.off_peak_end_minute),
+                    ),
+                ): time_validator,
+                vol.Optional(
+                    CONF_OFF_PEAK_PRICE,
+                    default=options.get(
+                        CONF_OFF_PEAK_PRICE,
+                        defaults.off_peak_price,
+                    ),
+                ): vol.All(vol.Coerce(float), vol.Range(min=0, max=10)),
+                vol.Optional(
+                    CONF_PEAK_PRICE,
+                    default=options.get(CONF_PEAK_PRICE, defaults.peak_price),
+                ): vol.All(vol.Coerce(float), vol.Range(min=0, max=10)),
+                vol.Optional(
+                    CONF_LOW_POWER,
+                    default=options.get(CONF_LOW_POWER, defaults.low_power_w),
+                ): vol.All(vol.Coerce(float), vol.Range(min=0, max=10000)),
+                vol.Optional(
+                    CONF_MEDIUM_POWER,
+                    default=options.get(
+                        CONF_MEDIUM_POWER,
+                        defaults.medium_power_w,
+                    ),
+                ): vol.All(vol.Coerce(float), vol.Range(min=0, max=10000)),
+                vol.Optional(
+                    CONF_HIGH_POWER,
+                    default=options.get(CONF_HIGH_POWER, defaults.high_power_w),
+                ): vol.All(vol.Coerce(float), vol.Range(min=0, max=10000)),
+                vol.Optional(
+                    CONF_DAYLIGHT_MARGIN,
+                    default=options.get(
+                        CONF_DAYLIGHT_MARGIN,
+                        defaults.daylight_margin_minutes,
+                    ),
+                ): vol.All(vol.Coerce(int), vol.Range(min=0, max=120)),
             }
         )
         return self.async_show_form(step_id="init", data_schema=schema)

@@ -122,6 +122,13 @@ class DailyPlan:
     planned_efh: float
     confidence: DataConfidence
     strategy: Strategy
+    sunrise_minute: int
+    sunset_minute: int
+    estimated_cost: float = 0.0
+    off_peak_minutes: int = 0
+    high_minutes: float = 0.0
+    unmet_efh: float = 0.0
+    daylight_limited: bool = False
     segments: tuple[PlanSegment, ...] = field(default_factory=tuple)
 
     def as_dict(self) -> dict[str, Any]:
@@ -132,6 +139,12 @@ class DailyPlan:
             "planned_efh": round(self.planned_efh, 3),
             "confidence": self.confidence.value,
             "strategy": self.strategy.value,
+            "sunrise_minute": self.sunrise_minute,
+            "sunset_minute": self.sunset_minute,
+            "estimated_cost": round(self.estimated_cost, 3),
+            "off_peak_minutes": self.off_peak_minutes,
+            "high_minutes": round(self.high_minutes, 1),
+            "unmet_efh": round(self.unmet_efh, 3),
+            "daylight_limited": self.daylight_limited,
             "segments": [segment.as_dict() for segment in self.segments],
         }
-

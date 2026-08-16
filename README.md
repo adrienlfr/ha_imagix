@@ -117,6 +117,23 @@ iMagi-x → Configurer**. Ils permettent notamment de désactiver le moteur, de
 choisir la stratégie Éco/Équilibrée/Qualité et d’ajuster les débits, RPM,
 bornes EFH et durées minimales.
 
+Le planificateur place tous les segments strictement entre le lever et le
+coucher du soleil fournis par l'entité Home Assistant `sun.sun`. Une marge
+configurable peut être ajoutée après le lever et avant le coucher. Il garantit
+par défaut un segment continu de 60 minutes en Boost chaque jour, puis combine
+Éco, Moyen et Boost pour couvrir le besoin EFH au coût estimé le plus faible.
+
+Les heures creuses, les tarifs HC/HP et les puissances électriques des trois
+profils sont réglables. Une plage HC nocturne ne sera donc pas utilisée si elle
+se trouve hors de la fenêtre solaire. Si le besoin ne tient pas dans la durée
+du jour restante, le moteur ne programme rien la nuit : l'état
+`daylight_limited` et le capteur de filtration non planifiable exposent le
+déficit restant.
+
+Si `sun.sun` ou ses horaires ne sont pas disponibles, le planning reste à
+l'arrêt avec l'état `sun_unavailable`. Il est recalculé automatiquement dès
+que Home Assistant publie des données solaires valides.
+
 Le moteur publie le planning dans `prog_user`, mais ne sélectionne pas
 automatiquement le programme expert. Cette activation reste manuelle tant que
 la valeur `actualProg` correspondante n’a pas été confirmée sur le coffret.

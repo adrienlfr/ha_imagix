@@ -72,7 +72,7 @@ class EntityImportTests(unittest.TestCase):
             imported = importlib.import_module(
                 "adaptive_filtration.entities.sensor"
             )
-            self.assertEqual(len(imported.DESCRIPTIONS), 8)
+            self.assertEqual(len(imported.DESCRIPTIONS), 11)
         finally:
             for name, module in previous.items():
                 if module is None:
@@ -83,4 +83,3 @@ class EntityImportTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

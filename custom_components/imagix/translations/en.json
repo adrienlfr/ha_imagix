@@ -20,7 +20,7 @@
     "step": {
       "init": {
         "title": "Adaptive filtration",
-        "description": "Configure EFH calculation and the expert schedule published to the controller.",
+      "description": "Configure EFH calculation, daylight limits, and off-peak cost optimization for the expert schedule.",
         "data": {
           "adaptive_filtration_enabled": "Enable adaptive filtration",
           "adaptive_filtration_strategy": "Strategy",
@@ -33,9 +33,17 @@
           "adaptive_high_rpm": "Boost speed (RPM)",
           "adaptive_min_efh": "Minimum daily EFH",
           "adaptive_max_efh": "Maximum daily EFH",
-          "adaptive_minimum_run_minutes": "Minimum segment duration (minutes)",
-          "adaptive_solar_share_target": "Solar filtration share (0 to 1)",
-          "adaptive_debt_carry_limit_efh": "Maximum carried debt (EFH)"
+        "adaptive_minimum_run_minutes": "Minimum segment duration (minutes)",
+        "adaptive_debt_carry_limit_efh": "Maximum carried debt (EFH)",
+        "adaptive_minimum_high_minutes": "Minimum daily Boost duration (minutes)",
+        "adaptive_off_peak_start": "Off-peak start (HH:MM)",
+        "adaptive_off_peak_end": "Off-peak end (HH:MM)",
+        "adaptive_off_peak_price": "Off-peak price (€/kWh)",
+        "adaptive_peak_price": "Peak price (€/kWh)",
+        "adaptive_low_power_w": "Eco power (W)",
+        "adaptive_medium_power_w": "Medium power (W)",
+        "adaptive_high_power_w": "Boost power (W)",
+        "adaptive_daylight_margin_minutes": "Margin after sunrise and before sunset (minutes)"
         }
       }
     }
