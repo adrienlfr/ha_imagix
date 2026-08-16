@@ -199,6 +199,37 @@ class SchedulerTests(unittest.TestCase):
         self.assertGreaterEqual(plan.segments[0].start_minute, 16 * 60 + 5)
         self.assertGreaterEqual(plan.planned_efh, plan.required_efh)
 
+    def test_after_sunset_recalculation_prepares_tomorrow(self) -> None:
+        config = AdaptiveFiltrationConfig()
+        night_inputs = FiltrationInputs(
+            now=datetime(2026, 8, 16, 22, 30),
+            water_temperature=24,
+            pool_volume_m3=35,
+            orp_mv=700,
+            ph=7.3,
+            pump_running=False,
+            pump_rpm=0,
+            confidence=DataConfidence.HIGH,
+        )
+        target = calculate_target(night_inputs, config)
+        plan = build_daily_plan(
+            night_inputs,
+            target,
+            config,
+            sunrise_minute=7 * 60,
+            sunset_minute=21 * 60,
+            delivered_today_efh=target.required_efh,
+            delivered_high_minutes=60,
+        )
+        self.assertEqual(plan.day.isoformat(), "2026-08-17")
+        self.assertTrue(plan.segments)
+        self.assertGreaterEqual(plan.planned_efh, plan.required_efh)
+        self.assertGreaterEqual(plan.high_minutes, 60)
+        self.assertTrue(all(item.start_minute >= 7 * 60 for item in plan.segments))
+        self.assertTrue(all(item.end_minute <= 21 * 60 for item in plan.segments))
+        modes = {step["mode"] for step in serialize_plan(plan, config)[0]["steps"]}
+        self.assertIn(1, modes)
+
     def test_night_off_peak_window_is_ignored(self) -> None:
         config = AdaptiveFiltrationConfig(
             off_peak_start_minute=22 * 60,

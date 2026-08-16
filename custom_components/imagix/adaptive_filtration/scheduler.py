@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import timedelta
 from itertools import permutations
 from math import ceil
 
@@ -57,20 +58,28 @@ def build_daily_plan(
     daylight_start = max(0, sunrise_minute + config.daylight_margin_minutes)
     daylight_end = min(1440, sunset_minute - config.daylight_margin_minutes)
     current_minute = inputs.now.hour * 60 + inputs.now.minute
+    planning_day = inputs.now.date()
+    effective_delivered_efh = delivered_today_efh
+    effective_high_minutes = delivered_high_minutes
     usable_start = daylight_start
     if daylight_start <= current_minute < daylight_end:
         usable_start = min(daylight_end, _round_up(current_minute + 5))
-    elif current_minute >= daylight_end:
-        usable_start = daylight_end
+    elif daylight_start < daylight_end and current_minute >= daylight_end:
+        # ``prog_user`` is a recurring daily schedule. After sunset, rebuilding
+        # an empty remainder would overwrite tomorrow's program with all OFF.
+        # Prepare the next day instead, without crediting today's production.
+        planning_day += timedelta(days=1)
+        effective_delivered_efh = 0.0
+        effective_high_minutes = 0.0
 
-    credited_efh = min(target.required_efh, max(0.0, delivered_today_efh))
+    credited_efh = min(target.required_efh, max(0.0, effective_delivered_efh))
     remaining_efh = max(0.0, target.required_efh - credited_efh)
     # Until a full hour has been confirmed, keep one continuous HIGH segment in
     # the future plan. This is deliberately stricter than merely topping up a
     # possibly fragmented daily counter.
     mandatory_high = (
         config.minimum_high_minutes
-        if delivered_high_minutes + 0.01 < config.minimum_high_minutes
+        if effective_high_minutes + 0.01 < config.minimum_high_minutes
         else 0
     )
     available_minutes = max(0, daylight_end - usable_start)
@@ -122,12 +131,12 @@ def build_daily_plan(
         for segment in segments
         if segment.profile is HydraulicProfile.HIGH
     )
-    high_minutes = delivered_high_minutes + scheduled_high
+    high_minutes = effective_high_minutes + scheduled_high
     unmet_efh = max(0.0, target.required_efh - planned_efh)
     high_unmet = high_minutes + 0.01 < config.minimum_high_minutes
 
     return DailyPlan(
-        day=inputs.now.date(),
+        day=planning_day,
         required_efh=target.required_efh,
         planned_efh=round(planned_efh, 3),
         confidence=target.confidence,

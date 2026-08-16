@@ -134,6 +134,10 @@ Si `sun.sun` ou ses horaires ne sont pas disponibles, le planning reste à
 l'arrêt avec l'état `sun_unavailable`. Il est recalculé automatiquement dès
 que Home Assistant publie des données solaires valides.
 
+Un recalcul demandé après le coucher du soleil prépare automatiquement le
+planning du lendemain ; il ne remplace donc pas le programme quotidien par une
+journée entièrement à l'arrêt.
+
 Le moteur publie le planning dans `prog_user`, mais ne sélectionne pas
 automatiquement le programme expert. Cette activation reste manuelle tant que
 la valeur `actualProg` correspondante n’a pas été confirmée sur le coffret.
