@@ -5,6 +5,16 @@ Toutes les modifications notables de ce projet sont documentées ici.
 Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 projet utilise [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [0.10.2] - 2026-08-17
+
+### Corrigé
+
+- Les recalculs en cours de journée reconstruisent désormais le programme
+  quotidien complet au lieu de ne planifier que la période située après
+  l'heure du recalcul.
+- L'heure de début ne recule donc plus progressivement à chaque actualisation
+  météo et les segments déjà passés restent présents dans `prog_user`.
+
 ## [0.10.1] - 2026-08-17
 
 ### Modifié

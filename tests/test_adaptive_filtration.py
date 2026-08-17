@@ -322,8 +322,10 @@ class SchedulerTests(unittest.TestCase):
         }
         self.assertIn(1, modes)
 
-    def test_midday_recalculation_only_plans_remaining_efh(self) -> None:
+    def test_midday_recalculation_preserves_the_complete_daily_plan(self) -> None:
         config = AdaptiveFiltrationConfig(strategy=Strategy.BALANCED)
+        weather = hot_afternoon_weather()
+        morning_inputs = inputs()
         late_inputs = FiltrationInputs(
             now=datetime(2026, 8, 16, 16, 0),
             water_temperature=24,
@@ -334,15 +336,28 @@ class SchedulerTests(unittest.TestCase):
             pump_rpm=0,
             confidence=DataConfidence.HIGH,
         )
-        target = calculate_target(late_inputs, config)
-        plan = build_daily_plan(
-            late_inputs,
-            target,
+        morning_target = calculate_target(morning_inputs, config, weather=weather)
+        late_target = calculate_target(late_inputs, config, weather=weather)
+        morning_plan = build_daily_plan(
+            morning_inputs,
+            morning_target,
             config,
-            delivered_today_efh=2.0,
+            weather=weather,
         )
-        self.assertGreaterEqual(plan.segments[0].start_minute, 16 * 60 + 5)
-        self.assertGreaterEqual(plan.planned_efh, plan.required_efh)
+        late_plan = build_daily_plan(
+            late_inputs,
+            late_target,
+            config,
+            weather=weather,
+        )
+        self.assertEqual(
+            serialize_plan(late_plan, config),
+            serialize_plan(morning_plan, config),
+        )
+        self.assertEqual(
+            late_plan.segments[0].start_minute,
+            morning_plan.segments[0].start_minute,
+        )
 
     def test_after_sunset_recalculation_prepares_tomorrow(self) -> None:
         config = AdaptiveFiltrationConfig()
@@ -363,8 +378,6 @@ class SchedulerTests(unittest.TestCase):
             config,
             sunrise_minute=7 * 60,
             sunset_minute=21 * 60,
-            delivered_today_efh=target.required_efh,
-            delivered_high_minutes=60,
         )
         self.assertEqual(plan.day.isoformat(), "2026-08-17")
         self.assertTrue(plan.segments)
@@ -388,37 +401,45 @@ class SchedulerTests(unittest.TestCase):
         self.assertTrue(all(8 * 60 <= item.start_minute for item in plan.segments))
         self.assertTrue(all(item.end_minute <= 20 * 60 for item in plan.segments))
 
-    def test_confirmed_daily_high_is_not_forced_twice(self) -> None:
+    def test_full_day_recalculation_retains_daily_high(self) -> None:
         config = AdaptiveFiltrationConfig()
-        target = calculate_target(inputs(), config)
-        plan = build_daily_plan(
-            inputs(),
-            target,
-            config,
-            delivered_high_minutes=60,
+        late_inputs = FiltrationInputs(
+            now=datetime(2026, 8, 16, 16, 0),
+            water_temperature=24,
+            pool_volume_m3=35,
+            orp_mv=700,
+            ph=7.3,
+            pump_running=False,
+            pump_rpm=0,
+            confidence=DataConfidence.HIGH,
         )
-        self.assertEqual(
+        target = calculate_target(late_inputs, config)
+        plan = build_daily_plan(late_inputs, target, config)
+        self.assertGreaterEqual(
             sum(
                 item.duration_minutes
                 for item in plan.segments
                 if item.profile is HydraulicProfile.HIGH
             ),
-            0,
+            60,
         )
         self.assertGreaterEqual(plan.planned_efh, plan.required_efh)
 
-    def test_completed_daily_plan_does_not_schedule_remaining_daylight(self) -> None:
+    def test_afternoon_recalculation_keeps_past_segments_in_program(self) -> None:
         config = AdaptiveFiltrationConfig()
-        target = calculate_target(inputs(), config)
-        plan = build_daily_plan(
-            inputs(),
-            target,
-            config,
-            delivered_today_efh=target.required_efh,
-            delivered_high_minutes=60,
-            delivered_medium_minutes=60,
+        late_inputs = FiltrationInputs(
+            now=datetime(2026, 8, 16, 16, 0),
+            water_temperature=24,
+            pool_volume_m3=35,
+            orp_mv=700,
+            ph=7.3,
+            pump_running=False,
+            pump_rpm=0,
+            confidence=DataConfidence.HIGH,
         )
-        self.assertEqual(plan.segments, ())
+        target = calculate_target(late_inputs, config)
+        plan = build_daily_plan(late_inputs, target, config)
+        self.assertLess(plan.segments[0].start_minute, 16 * 60)
         self.assertFalse(plan.daylight_limited)
 
     def test_daytime_off_peak_window_is_used(self) -> None:

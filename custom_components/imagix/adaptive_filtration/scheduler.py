@@ -52,39 +52,24 @@ def build_daily_plan(
     solar_noon_minute: int = 13 * 60,
     sunrise_minute: int = 8 * 60,
     sunset_minute: int = 20 * 60,
-    delivered_today_efh: float = 0.0,
-    delivered_high_minutes: float = 0.0,
-    delivered_medium_minutes: float = 0.0,
     weather: WeatherContext | None = None,
 ) -> DailyPlan:
-    """Build one continuous, daylight-only run with weather-aware profiles."""
+    """Build the complete daily program, independently of recalculation time."""
     daylight_start = max(0, sunrise_minute + config.daylight_margin_minutes)
     daylight_end = min(1440, sunset_minute - config.daylight_margin_minutes)
     current_minute = inputs.now.hour * 60 + inputs.now.minute
     planning_day = inputs.now.date()
-    effective_efh = max(0.0, delivered_today_efh)
-    effective_high = max(0.0, delivered_high_minutes)
-    effective_medium = max(0.0, delivered_medium_minutes)
     usable_start = _round_up(daylight_start)
     usable_end = _round_down(daylight_end)
 
-    if daylight_start <= current_minute < daylight_end:
-        usable_start = min(usable_end, _round_up(current_minute + 1))
-    elif daylight_start < daylight_end and current_minute >= daylight_end:
+    if daylight_start < daylight_end and current_minute >= daylight_end:
         # The controller program repeats daily: after sunset, prepare tomorrow.
         planning_day += timedelta(days=1)
-        effective_efh = 0.0
-        effective_high = 0.0
-        effective_medium = 0.0
 
-    credited_efh = min(target.required_efh, effective_efh)
-    remaining_efh = max(0.0, target.required_efh - credited_efh)
     available_slots = max(0, (usable_end - usable_start) // _SLOT_MINUTES)
     policy = policy_for(config.strategy)
     allocation = _choose_allocation(
-        remaining_efh,
-        effective_high,
-        effective_medium,
+        target.required_efh,
         available_slots,
         target.recovery_required,
         config,
@@ -108,11 +93,11 @@ def build_daily_plan(
 
     segments = _segments_from_placement(placement, target, config)
     scheduled_efh = sum(segment.planned_efh for segment in segments)
-    planned_efh = credited_efh + scheduled_efh
+    planned_efh = scheduled_efh
     scheduled_high = _duration_for(segments, HydraulicProfile.HIGH)
     scheduled_medium = _duration_for(segments, HydraulicProfile.MEDIUM)
-    high_minutes = effective_high + scheduled_high
-    medium_minutes = effective_medium + scheduled_medium
+    high_minutes = scheduled_high
+    medium_minutes = scheduled_medium
     unmet_efh = max(0.0, target.required_efh - planned_efh)
     high_unmet = high_minutes + 0.01 < config.minimum_high_minutes
     medium_unmet = medium_minutes + 0.01 < config.minimum_medium_minutes
@@ -142,23 +127,18 @@ def build_daily_plan(
 
 
 def _choose_allocation(
-    remaining_efh: float,
-    delivered_high_minutes: float,
-    delivered_medium_minutes: float,
+    required_efh: float,
     available_slots: int,
     recovery_required: bool,
     config: AdaptiveFiltrationConfig,
     policy: ProfilePolicy,
 ) -> _Allocation | None:
     """Choose a useful profile mix before deciding when it should run."""
-    high_minutes = max(0.0, config.minimum_high_minutes - delivered_high_minutes)
+    high_minutes = config.minimum_high_minutes
     if recovery_required:
         high_minutes += 2 * _SLOT_MINUTES
     high_slots = ceil(high_minutes / _SLOT_MINUTES)
-    medium_minutes = max(
-        0.0,
-        config.minimum_medium_minutes - delivered_medium_minutes,
-    )
+    medium_minutes = config.minimum_medium_minutes
     minimum_medium_slots = ceil(medium_minutes / _SLOT_MINUTES)
     if high_slots + minimum_medium_slots > available_slots:
         return None
@@ -168,7 +148,7 @@ def _choose_allocation(
     best_key: tuple[float, float, float, int] | None = None
     for medium_slots in range(minimum_medium_slots, available_slots - high_slots + 1):
         medium_efh = _slot_efh(HydraulicProfile.MEDIUM, config) * medium_slots
-        residual = max(0.0, remaining_efh - high_efh - medium_efh)
+        residual = max(0.0, required_efh - high_efh - medium_efh)
         low_slot_efh = _slot_efh(HydraulicProfile.LOW, config)
         low_slots = ceil(residual / low_slot_efh - 1e-9) if residual else 0
         if high_slots + medium_slots + low_slots > available_slots:
@@ -179,7 +159,7 @@ def _choose_allocation(
         medium_share = medium_efh / flexible if flexible else 1.0
         share_distance = abs(medium_share - policy.medium_share_of_flexible_efh)
         total_efh = high_efh + flexible
-        excess = max(0.0, total_efh - remaining_efh)
+        excess = max(0.0, total_efh - required_efh)
         energy = (
             config.profile_power_w[HydraulicProfile.HIGH] * high_slots
             + config.profile_power_w[HydraulicProfile.MEDIUM] * medium_slots

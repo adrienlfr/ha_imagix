@@ -179,7 +179,7 @@ class AdaptiveFiltrationManager:
 
     @callback
     def _handle_weather_refresh(self, _now: datetime) -> None:
-        """Refresh the hourly forecast and adapt the remaining program."""
+        """Refresh the forecast and rebuild the complete daily program."""
         self.hass.async_create_task(self.async_recalculate())
 
     async def _async_process_coordinator_update(self) -> None:
@@ -231,9 +231,6 @@ class AdaptiveFiltrationManager:
                 solar_noon_minute=solar_noon_minute,
                 sunrise_minute=sunrise_minute,
                 sunset_minute=sunset_minute,
-                delivered_today_efh=self.delivered_efh,
-                delivered_high_minutes=self.delivered_high_minutes,
-                delivered_medium_minutes=self.delivered_medium_minutes,
                 weather=weather,
             )
             program = serialize_plan(self.plan, config)

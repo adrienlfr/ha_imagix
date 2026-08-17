@@ -139,13 +139,18 @@ Les heures creuses, les tarifs HC/HP et les puissances électriques des trois
 profils sont réglables. Le tarif départage les placements après la pertinence
 thermique propre à chaque profil. Une plage HC nocturne ne sera donc pas
 utilisée si elle se trouve hors de la fenêtre solaire. Si le besoin ne tient
-pas dans la durée du jour restante, le moteur ne programme rien la nuit : l'état
+pas dans la fenêtre solaire, le moteur ne programme rien la nuit : l'état
 `daylight_limited` et le capteur de filtration non planifiable exposent le
 déficit restant.
 
 Si `sun.sun` ou ses horaires ne sont pas disponibles, le planning reste à
 l'arrêt avec l'état `sun_unavailable`. Il est recalculé automatiquement dès
 que Home Assistant publie des données solaires valides.
+
+Chaque actualisation météo reconstruit le planning sur la journée complète.
+L'heure courante ne tronque pas le début du programme : les créneaux déjà
+passés restent présents et l'heure de démarrage ne glisse pas progressivement
+vers l'après-midi.
 
 Un recalcul demandé après le coucher du soleil prépare automatiquement le
 planning du lendemain ; il ne remplace donc pas le programme quotidien par une
